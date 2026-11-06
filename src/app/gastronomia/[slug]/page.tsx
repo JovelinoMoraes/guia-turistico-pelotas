@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { getLocationBySlug } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/gastronomia/[slug
 }
 
 export default async function GastronomyDetailPage({ params }: PageProps<"/gastronomia/[slug]">) {
+  await connection();
   const { slug } = await params;
   const place = await getLocationBySlug("gastronomia", slug);
 
@@ -33,11 +35,20 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
   return (
     <SiteShell active="gastronomia" showWeather={false}>
       <main className="mx-auto max-w-5xl px-5 py-5">
-        <Link className="text-3xl text-[#333]" href="/gastronomia" aria-label="Voltar para gastronomia">‹</Link>
+        <Link className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-bold text-brick transition-colors hover:bg-sand" href="/gastronomia" aria-label="Voltar para gastronomia">
+          <span className="text-lg leading-none" aria-hidden="true">←</span>
+          Voltar
+        </Link>
         <div className="relative mt-4 flex h-72 items-end rounded-3xl bg-sand p-6 text-sm font-bold text-muted">
           Foto não informada
         </div>
         <h1 className="mt-7 text-4xl font-extrabold">{place.name}</h1>
+        {place.partner && (
+          <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-sand px-3 py-2 text-sm font-extrabold text-brick">
+            <span aria-hidden="true">🤝</span>
+            Local parceiro
+          </p>
+        )}
         <p className="mt-5 rounded-2xl border border-border bg-sand px-5 py-4 text-lg font-bold capitalize text-brick">
           {place.category}
         </p>

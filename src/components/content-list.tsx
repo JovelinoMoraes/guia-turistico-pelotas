@@ -90,19 +90,25 @@ export function ContentList({ kind, items }: ContentListProps) {
 
   return (
     <div>
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         <button
-          className="rounded-full border border-brick px-5 py-3 text-sm font-bold text-brick outline-none hover:bg-sand focus-visible:outline-4"
+          className="inline-flex w-fit items-center gap-2 rounded-full border border-brick px-4 py-2 text-sm font-bold text-brick outline-none hover:bg-sand focus-visible:outline-4"
           type="button"
           onClick={requestLocation}
           disabled={locationStatus === "loading"}
+          aria-label="Ordenar locais por proximidade"
         >
-          {locationStatus === "loading" ? "Obtendo localização..." : "Ordenar por mais próximo"}
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8" />
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M22 12h-3M12 22v-3M2 12h3" />
+          </svg>
+          {locationStatus === "loading" ? "Localizando..." : "Mais próximos"}
         </button>
         <label className="flex flex-col gap-2 text-sm font-bold text-ink">
           <span className="sr-only">Buscar</span>
           <input
-            className="rounded-2xl border border-[#d8dce2] bg-[#f2f7fd] px-5 py-4 text-base font-normal outline-none placeholder:text-[#777] focus:border-[#2764c4]"
+            className="rounded-xl border border-border bg-white px-4 py-3 text-base font-normal outline-none placeholder:text-muted focus:border-brick"
             type="search"
             value={query}
             onChange={(event) => {
@@ -115,7 +121,7 @@ export function ContentList({ kind, items }: ContentListProps) {
         <label className="flex flex-col gap-2 text-sm font-bold text-ink">
           <span className="sr-only">Categoria</span>
           <select
-            className="rounded-full border border-[#d8dce2] bg-[#f2f4f7] px-5 py-3 text-base font-bold outline-none focus:border-[#2764c4]"
+            className="rounded-full border border-border bg-white px-4 py-2.5 text-sm font-bold outline-none focus:border-brick"
             value={category}
             onChange={(event) => {
               setCategory(event.target.value);
@@ -146,12 +152,12 @@ export function ContentList({ kind, items }: ContentListProps) {
       )}
 
       {sortedItems.length > 0 ? (
-        <div className="grid gap-5 pt-8 md:grid-cols-2">
+        <div className="grid gap-4 pt-5 md:grid-cols-2">
           {visibleItems.map((item) => (
             <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
-              <div className="relative h-48 overflow-hidden bg-sand">
+              <div className="relative h-36 overflow-hidden bg-sand">
                 {item.partner && (
-                  <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-paper/95 px-3 py-2 text-xs font-extrabold text-brick shadow-sm" title="Local parceiro">
+                  <span className="absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-paper/95 px-2.5 py-1.5 text-xs font-extrabold text-brick shadow-sm" title="Local parceiro">
                     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                       <path d="m8 11 2.5-2.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 0 3 0l.5-.5a2.1 2.1 0 0 1 3 3L16 17.5a3 3 0 0 1-4.2 0L8 13.7" />
                       <path d="m8 11-2.2-2.2a2.1 2.1 0 0 0-3 3l5.5 5.5a3 3 0 0 0 4.2 0l1-1" />
@@ -166,19 +172,19 @@ export function ContentList({ kind, items }: ContentListProps) {
                     <div className="absolute inset-0 bg-ink/25" />
                   </>
                 ) : (
-                  <div className="flex h-full items-end p-5 text-sm font-bold text-muted">Imagem não informada</div>
+                  <div className="flex h-full items-end p-4 text-sm font-bold text-muted">Imagem não informada</div>
                 )}
               </div>
-              <div className="flex flex-1 flex-col p-5">
+              <div className="flex flex-1 flex-col p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-brick">
                   {kind === "gastronomia"
                     ? foodLabels[(item as FoodPlace).category]
                     : (item as TouristAttraction).category}
                 </p>
-                <h2 className="mt-2 text-2xl font-extrabold text-ink">{item.name}</h2>
-                <p className="mt-3 min-h-14 leading-7 text-muted">{item.summary}</p>
+                <h2 className="mt-1.5 text-xl font-extrabold text-ink">{item.name}</h2>
+                <p className="mt-2 min-h-12 text-sm leading-6 text-muted">{item.summary}</p>
                 {userLocation && typeof item.latitude === "number" && typeof item.longitude === "number" && (
-                  <p className="mt-4 border-t border-border pt-3 text-sm font-bold text-olive">
+                  <p className="mt-3 border-t border-border pt-2 text-sm font-bold text-olive">
                     Aproximadamente{" "}
                     {formatDistance(
                       getDistanceInKm(userLocation, {

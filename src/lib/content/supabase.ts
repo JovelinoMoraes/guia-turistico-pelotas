@@ -18,6 +18,7 @@ type LocationRow = {
   image_source_url: string | null;
   published: boolean;
   partner: boolean;
+  updated_at: string;
 };
 
 function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
@@ -41,7 +42,7 @@ function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
     image,
     partner: row.partner,
     sourceUrl: row.image_source_url ?? "",
-    lastVerifiedAt: new Date().toISOString().slice(0, 10),
+    lastVerifiedAt: row.updated_at.slice(0, 10),
     featured: false,
   };
 

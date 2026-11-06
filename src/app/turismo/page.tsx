@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { ContentList } from "@/components/content-list";
 import { getPublishedLocations } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 export const instant = false;
 
 export default async function TourismPage() {
+  await connection();
   const touristAttractions = await getPublishedLocations("turismo");
   return (
     <SiteShell active="turismo">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { getWeather } from "@/lib/weather/service";
 
@@ -42,27 +43,34 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
   return (
     <div className="min-h-screen bg-paper pb-24 text-ink">
       <header className="sticky top-0 z-10 border-b border-border bg-paper/95 backdrop-blur">
-        <nav className="mx-auto flex h-16 max-w-5xl items-center justify-center px-5" aria-label="Navegação principal">
-          <Link href="/turismo" className="font-display text-2xl font-bold tracking-tight text-brick">Pelotas</Link>
+        <nav className="relative mx-auto flex h-20 max-w-5xl items-center justify-start px-5" aria-label="Navegação principal">
+          <Link href="/turismo" aria-label="Ir para a página de Turismo">
+            <span className="block rounded-2xl bg-white/70 p-1.5">
+              <Image className="h-12 w-auto rounded-xl object-contain opacity-95" src="/images/logo.jpg" alt="Logo do Guia Turístico de Pelotas" width={180} height={60} priority />
+            </span>
+          </Link>
+          <Link href="/turismo" className="absolute left-1/2 -translate-x-1/2 font-display text-2xl font-bold tracking-tight text-brick" aria-label="Ir para a página de Turismo">
+            Pelotas
+          </Link>
         </nav>
       </header>
       {showWeather && (
-        <section className="mx-auto max-w-5xl px-5 pt-5" aria-label="Clima em Pelotas">
+        <section className="mx-auto max-w-5xl px-5 pt-3" aria-label="Clima em Pelotas">
           {weather ? (
-            <div className="flex items-center justify-between rounded-2xl border border-border bg-sand px-5 py-4">
-              <div className="flex items-center gap-4">
-                <span className="text-3xl" aria-hidden="true">☁</span>
+            <div className="flex items-center justify-between rounded-xl border border-border bg-sand px-4 py-2.5">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl" aria-hidden="true">☁</span>
                 <div>
-                  <p className="font-bold">Pelotas, RS</p>
-                  <p className="text-sm text-[#676767]">
+                  <p className="text-sm font-bold">Pelotas, RS</p>
+                  <p className="text-xs text-muted">
                     {weatherDescriptions[weather.currentWeatherCode] ?? "Condição não informada"}
                   </p>
                 </div>
               </div>
-              <strong className="text-2xl">{Math.round(weather.currentTemperature)}°C</strong>
+              <strong className="text-xl">{Math.round(weather.currentTemperature)}°C</strong>
             </div>
           ) : (
-            <div className="rounded-2xl border border-border bg-sand px-5 py-4 text-sm text-muted">
+            <div className="rounded-xl border border-border bg-sand px-4 py-2.5 text-sm text-muted">
               Não foi possível atualizar o clima agora.
             </div>
           )}
