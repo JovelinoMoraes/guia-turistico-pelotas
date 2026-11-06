@@ -7,6 +7,7 @@ import { getLocationBySlug } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
 import { getMapUrl } from "@/lib/maps";
 import { OpeningStatus } from "@/components/opening-status";
+import { getPhoneHref } from "@/lib/phone";
 
 export const instant = false;
 
@@ -76,6 +77,12 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
         <section className="mt-8 rounded-2xl bg-sand p-6" aria-labelledby="food-location">
           <h2 id="food-location" className="mt-3 text-2xl font-extrabold">Endereço</h2>
           <p className="mt-2 text-muted">{place.address ?? "Endereço não informado na fonte consultada."}</p>
+          {place.phone && (
+            <p className="mt-4">
+              <span className="block text-sm font-bold text-muted">Telefone</span>
+              <a className="font-bold text-brick underline" href={getPhoneHref(place.phone)}>{place.phone}</a>
+            </p>
+          )}
           {mapUrl && (
             <a className="mt-5 inline-block rounded-xl bg-brick px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
               Abrir localização no mapa

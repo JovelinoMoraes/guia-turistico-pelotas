@@ -13,6 +13,7 @@ type LocationFormValues = {
   summary?: string;
   description?: string | null;
   address?: string | null;
+  phone?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   image_url?: string | null;
@@ -97,6 +98,7 @@ export function LocationForm({ initialValues }: { initialValues?: LocationFormVa
       </fieldset>
       <label className="grid gap-2 font-bold">Descrição<textarea className="field" name="description" defaultValue={initialValues?.description ?? ""} placeholder="Descreva o local com mais detalhes para a página do local." rows={3} /></label>
       <label className="grid gap-2 font-bold">Endereço<input className="field" name="address" defaultValue={initialValues?.address ?? ""} placeholder="Ex.: Praça Coronel Pedro Osório, Centro, Pelotas - RS" /></label>
+      <label className="grid gap-2 font-bold">Telefone<input className="field" name="phone" defaultValue={initialValues?.phone ?? ""} placeholder="Ex.: (53) 99999-9999" type="tel" /></label>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 font-bold">Latitude<input className="field" name="latitude" defaultValue={initialValues?.latitude ?? ""} placeholder="Ex.: -31.7703" type="number" step="any" /></label>
         <label className="grid gap-2 font-bold">Longitude<input className="field" name="longitude" defaultValue={initialValues?.longitude ?? ""} placeholder="Ex.: -52.3420" type="number" step="any" /></label>

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { hasActiveAdminSession, startAdminSession } from "@/lib/supabase/admin-session";
 import { isValidLocationCategory } from "@/lib/content/categories";
@@ -58,6 +59,7 @@ export async function createLocation(formData: FormData) {
     summary,
     description: textValue(formData, "description") || null,
     address: textValue(formData, "address") || null,
+    phone: textValue(formData, "phone") || null,
     latitude: Number(textValue(formData, "latitude")) || null,
     longitude: Number(textValue(formData, "longitude")) || null,
     image_url: textValue(formData, "image_url") || null,
@@ -72,6 +74,7 @@ export async function createLocation(formData: FormData) {
 
   revalidatePath("/turismo");
   revalidatePath("/gastronomia");
+  redirect("/admin?status=created");
 }
 
 export async function updateLocation(formData: FormData) {
@@ -92,6 +95,7 @@ export async function updateLocation(formData: FormData) {
     summary,
     description: textValue(formData, "description") || null,
     address: textValue(formData, "address") || null,
+    phone: textValue(formData, "phone") || null,
     latitude: Number(textValue(formData, "latitude")) || null,
     longitude: Number(textValue(formData, "longitude")) || null,
     image_url: textValue(formData, "image_url") || null,
@@ -108,6 +112,7 @@ export async function updateLocation(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath("/turismo");
   revalidatePath("/gastronomia");
+  redirect("/admin?status=updated");
 }
 
 export async function deleteLocation(formData: FormData) {
@@ -118,4 +123,5 @@ export async function deleteLocation(formData: FormData) {
   if (error) throw new Error(`Não foi possível excluir o local: ${error.message}`);
   revalidatePath("/turismo");
   revalidatePath("/gastronomia");
+  redirect("/admin?status=deleted");
 }

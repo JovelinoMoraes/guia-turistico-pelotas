@@ -15,6 +15,7 @@ export type TouristAttraction = {
   description: string;
   category: string;
   address?: string;
+  phone?: string;
   latitude?: number;
   longitude?: number;
   image?: ContentImage;
@@ -35,6 +36,7 @@ export type FoodPlace = {
   description?: string;
   category: FoodCategory;
   address?: string;
+  phone?: string;
   latitude?: number;
   longitude?: number;
   image?: ContentImage;

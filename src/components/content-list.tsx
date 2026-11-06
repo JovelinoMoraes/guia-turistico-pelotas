@@ -158,7 +158,8 @@ export function ContentList({ kind, items }: ContentListProps) {
       {sortedItems.length > 0 ? (
         <div className="grid gap-3 pt-5 sm:grid-cols-2 lg:grid-cols-3">
           {visibleItems.map((item) => (
-            <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
+            <article key={item.id} className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-shadow hover:shadow-md ${item.partner ? "border-2 border-brick bg-[#fffaf4] shadow-[0_0_0_3px_rgba(155,79,61,0.18)]" : "border-border"}`}>
+              {item.partner && <div className="h-1 w-full shrink-0 bg-brick" aria-hidden="true" />}
               <div className="relative h-24 overflow-hidden bg-sand">
                 {item.partner && (
                   <span className="absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-paper/95 px-2 py-1 text-[11px] font-extrabold text-brick shadow-sm" title="Local parceiro">

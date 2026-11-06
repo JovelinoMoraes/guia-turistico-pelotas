@@ -11,6 +11,7 @@ type LocationRow = {
   summary: string;
   description: string | null;
   address: string | null;
+  phone: string | null;
   latitude: number | null;
   longitude: number | null;
   image_url: string | null;
@@ -39,6 +40,7 @@ function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
     name: row.name,
     summary: row.summary,
     address: row.address ?? undefined,
+    phone: row.phone ?? undefined,
     latitude: row.latitude ?? undefined,
     longitude: row.longitude ?? undefined,
     image,
