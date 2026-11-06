@@ -1,17 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { foodPlaces, getFoodPlace } from "@/lib/content/data";
+import { getLocationBySlug } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
 import { getMapUrl } from "@/lib/maps";
 
-export function generateStaticParams() {
-  return foodPlaces.map((place) => ({ slug: place.slug }));
-}
+export const instant = false;
 
 export async function generateMetadata({ params }: PageProps<"/gastronomia/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const place = getFoodPlace(slug);
+  const place = await getLocationBySlug("gastronomia", slug);
 
   return place
     ? {
@@ -27,7 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/gastronomia/[slug
 
 export default async function GastronomyDetailPage({ params }: PageProps<"/gastronomia/[slug]">) {
   const { slug } = await params;
-  const place = getFoodPlace(slug);
+  const place = await getLocationBySlug("gastronomia", slug);
 
   if (!place) notFound();
   const mapUrl = getMapUrl(place);

@@ -1,0 +1,43 @@
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { LocationForm } from "@/components/admin/location-form";
+import { deleteLocation } from "./actions";
+
+export const instant = false;
+
+export default async function AdminPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/admin/login");
+  const { data: profile } = await supabase.from("admin_profiles").select("id").eq("id", user.id).maybeSingle();
+  if (!profile) redirect("/admin/login");
+
+  const { data: locations, error } = await supabase
+    .from("locations")
+    .select("id, name, type, category, published")
+    .order("name");
+  if (error) throw new Error(`Não foi possível carregar o painel: ${error.message}`);
+
+  return (
+    <main className="mx-auto max-w-5xl px-5 py-8">
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <div><p className="font-display text-2xl font-bold text-brick">Pelotas</p><h1 className="mt-2 text-3xl font-extrabold">Painel administrativo</h1></div>
+        <Link className="rounded-xl border border-border px-4 py-2 font-bold text-brick" href="/turismo">Ver site</Link>
+      </div>
+      <LocationForm />
+      <section className="mt-8 rounded-3xl border border-border bg-white p-6">
+        <h2 className="text-2xl font-extrabold">Locais cadastrados</h2>
+        <div className="mt-4 grid gap-3">
+          {locations?.map((location) => (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border py-3" key={location.id}>
+              <div><strong>{location.name}</strong><p className="text-sm text-muted">{location.type} · {location.category} · {location.published ? "Publicado" : "Rascunho"}</p></div>
+              <form action={deleteLocation}><input name="id" type="hidden" value={location.id} /><button className="text-sm font-bold text-brick" type="submit">Excluir</button></form>
+            </div>
+          ))}
+          {!locations?.length && <p className="text-muted">Nenhum local cadastrado.</p>}
+        </div>
+      </section>
+    </main>
+  );
+}

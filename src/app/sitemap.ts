@@ -1,8 +1,12 @@
 import type { MetadataRoute } from "next";
-import { foodPlaces, touristAttractions } from "@/lib/content/data";
+import { getPublishedLocations } from "@/lib/content/data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://guia-turistico-pelotas.vercel.app";
+  const [touristAttractions, foodPlaces] = await Promise.all([
+    getPublishedLocations("turismo"),
+    getPublishedLocations("gastronomia"),
+  ]);
 
   return [
     {

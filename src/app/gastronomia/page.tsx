@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContentList } from "@/components/content-list";
-import { foodPlaces } from "@/lib/content/data";
+import { getPublishedLocations } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
 
 export const metadata: Metadata = {
@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GastronomyPage() {
+export const instant = false;
+
+export default async function GastronomyPage() {
+  const foodPlaces = await getPublishedLocations("gastronomia");
   return (
     <SiteShell active="gastronomia">
       <main className="mx-auto max-w-5xl px-5 py-7">

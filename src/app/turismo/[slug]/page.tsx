@@ -2,17 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTouristAttraction, touristAttractions } from "@/lib/content/data";
+import { getLocationBySlug } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
 import { getMapUrl } from "@/lib/maps";
 
-export function generateStaticParams() {
-  return touristAttractions.map((attraction) => ({ slug: attraction.slug }));
-}
+export const instant = false;
 
 export async function generateMetadata({ params }: PageProps<"/turismo/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const attraction = getTouristAttraction(slug);
+  const attraction = await getLocationBySlug("turismo", slug);
 
   return attraction
     ? {
@@ -28,7 +26,7 @@ export async function generateMetadata({ params }: PageProps<"/turismo/[slug]">)
 
 export default async function TourismDetailPage({ params }: PageProps<"/turismo/[slug]">) {
   const { slug } = await params;
-  const attraction = getTouristAttraction(slug);
+  const attraction = await getLocationBySlug("turismo", slug);
 
   if (!attraction) notFound();
   const mapUrl = getMapUrl(attraction);
