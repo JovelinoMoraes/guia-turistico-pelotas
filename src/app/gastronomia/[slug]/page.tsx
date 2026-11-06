@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { foodPlaces, getFoodPlace } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
+import { getMapUrl } from "@/lib/maps";
 
 export function generateStaticParams() {
   return foodPlaces.map((place) => ({ slug: place.slug }));
@@ -29,6 +30,7 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
   const place = getFoodPlace(slug);
 
   if (!place) notFound();
+  const mapUrl = getMapUrl(place);
 
   return (
     <SiteShell active="gastronomia" showWeather={false}>
@@ -45,6 +47,11 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
           <p className="text-3xl text-[#2764c4]" aria-hidden="true">⌖</p>
           <h2 id="food-location" className="mt-3 text-2xl font-extrabold">Endereço</h2>
           <p className="mt-2 text-[#676767]">{place.address ?? "Endereço não informado na fonte consultada."}</p>
+          {mapUrl && (
+            <a className="mt-5 inline-block rounded-xl bg-[#2764c4] px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
+              Abrir localização no mapa
+            </a>
+          )}
         </section>
       </main>
     </SiteShell>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { FoodPlace, TouristAttraction } from "@/lib/content/types";
+import { filterContent } from "@/lib/content/filter";
 
 type ContentListProps = {
   kind: "turismo" | "gastronomia";
@@ -21,17 +22,7 @@ export function ContentList({ kind, items }: ContentListProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("todas");
   const categories = [...new Set(items.map((item) => item.category))];
-  const filteredItems = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase("pt-BR");
-
-    return items.filter((item) => {
-      const matchesQuery =
-        !normalizedQuery ||
-        `${item.name} ${item.summary}`.toLocaleLowerCase("pt-BR").includes(normalizedQuery);
-      const matchesCategory = category === "todas" || item.category === category;
-      return matchesQuery && matchesCategory;
-    });
-  }, [category, items, query]);
+  const filteredItems = useMemo(() => filterContent(items, query, category), [category, items, query]);
 
   return (
     <div>
@@ -80,9 +71,11 @@ export function ContentList({ kind, items }: ContentListProps) {
                 </p>
                 <h2 className="mt-2 text-2xl font-extrabold text-[#252525]">{item.name}</h2>
                 <p className="mt-3 min-h-14 leading-7 text-[#676767]">{item.summary}</p>
-                <Link className="absolute inset-0" href={`/${kind}/${item.slug}`}>
-                  <span className="sr-only">Ver detalhes de {item.name}</span>
-                </Link>
+                <Link
+                  className="absolute inset-0 rounded-3xl focus-visible:outline-4 focus-visible:outline-[#2764c4]"
+                  href={`/${kind}/${item.slug}`}
+                  aria-label={`Ver detalhes de ${item.name}`}
+                />
               </div>
             </article>
           ))}

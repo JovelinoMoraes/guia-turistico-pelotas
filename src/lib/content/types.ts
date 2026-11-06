@@ -6,6 +6,8 @@ export type TouristAttraction = {
   description: string;
   category: string;
   address?: string;
+  latitude?: number;
+  longitude?: number;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;
@@ -21,6 +23,8 @@ export type FoodPlace = {
   description?: string;
   category: FoodCategory;
   address?: string;
+  latitude?: number;
+  longitude?: number;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;

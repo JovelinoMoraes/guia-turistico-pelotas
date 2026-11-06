@@ -31,10 +31,12 @@ const weatherDescriptions: Record<number, string> = {
 export async function SiteShell({ children, active, showWeather = true }: SiteShellProps) {
   let weather;
 
-  try {
-    weather = await getWeather();
-  } catch {
-    weather = null;
+  if (showWeather) {
+    try {
+      weather = await getWeather();
+    } catch {
+      weather = null;
+    }
   }
 
   return (
