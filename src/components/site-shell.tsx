@@ -79,15 +79,15 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
       )}
       {children}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-paper" aria-label="Navegação inferior">
-        <div className="mx-auto grid max-w-5xl grid-cols-2">
-          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-brick" : "text-muted"}`} href="/turismo">
+        <div className="mx-auto grid max-w-5xl grid-cols-3">
+          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-brick" : "text-muted"}`} href="/turismo" aria-current={active === "turismo" ? "page" : undefined}>
             <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
               <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z" />
               <path d="M9 3v15M15 6v15" />
             </svg>
             Turismo
           </Link>
-          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "gastronomia" ? "text-brick" : "text-muted"}`} href="/gastronomia">
+          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "gastronomia" ? "text-brick" : "text-muted"}`} href="/gastronomia" aria-current={active === "gastronomia" ? "page" : undefined}>
             <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 3v7a3 3 0 0 0 6 0V3" />
               <path d="M8 3v18" />
@@ -96,6 +96,10 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
               <path d="M17 3c2 2 3 4 3 7 0 1.7-1.3 3-3 3" />
             </svg>
             Restaurantes
+          </Link>
+          <Link className="flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold text-muted" href="/sugerir">
+            <span className="text-2xl leading-none" aria-hidden="true">+</span>
+            Sugerir local
           </Link>
         </div>
       </nav>

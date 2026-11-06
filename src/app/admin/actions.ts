@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { hasActiveAdminSession, startAdminSession } from "@/lib/supabase/admin-session";
 import { isValidLocationCategory } from "@/lib/content/categories";
 import { parseOpeningHours } from "@/lib/opening-hours";
+import { validateLocationText, validateOptionalUrl } from "@/lib/content/validation";
 
 export async function startAdminAccess() {
   await startAdminSession();
@@ -47,9 +48,27 @@ export async function createLocation(formData: FormData) {
   const type = textValue(formData, "type");
   const category = textValue(formData, "category");
   const summary = textValue(formData, "summary");
+  const description = textValue(formData, "description");
+  const address = textValue(formData, "address");
+  const phone = textValue(formData, "phone");
+  const imageUrl = textValue(formData, "image_url");
+  const imageAlt = textValue(formData, "image_alt");
+  const imageCredit = textValue(formData, "image_credit");
+  const imageSourceUrl = textValue(formData, "image_source_url");
+  const openingHours = textValue(formData, "opening_hours");
   if (!name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
     throw new Error("Preencha nome, tipo, categoria e resumo.");
   }
+  validateLocationText(name, "name", "Nome");
+  validateLocationText(summary, "summary", "Resumo");
+  validateLocationText(description, "description", "Descrição");
+  validateLocationText(address, "address", "Endereço");
+  validateLocationText(phone, "phone", "Telefone");
+  validateLocationText(imageAlt, "description", "Texto alternativo");
+  validateLocationText(imageCredit, "address", "Crédito");
+  validateOptionalUrl(imageUrl, "A URL da imagem");
+  validateOptionalUrl(imageSourceUrl, "A fonte da imagem");
+  validateLocationText(openingHours, "openingHours", "Horários");
 
   const { error } = await supabase.from("locations").insert({
     name,
@@ -57,18 +76,18 @@ export async function createLocation(formData: FormData) {
     type,
     category,
     summary,
-    description: textValue(formData, "description") || null,
-    address: textValue(formData, "address") || null,
-    phone: textValue(formData, "phone") || null,
+    description: description || null,
+    address: address || null,
+    phone: phone || null,
     latitude: Number(textValue(formData, "latitude")) || null,
     longitude: Number(textValue(formData, "longitude")) || null,
-    image_url: textValue(formData, "image_url") || null,
-    image_alt: textValue(formData, "image_alt") || null,
-    image_credit: textValue(formData, "image_credit") || null,
-    image_source_url: textValue(formData, "image_source_url") || null,
+    image_url: imageUrl || null,
+    image_alt: imageAlt || null,
+    image_credit: imageCredit || null,
+    image_source_url: imageSourceUrl || null,
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
-    opening_hours: parseOpeningHours(textValue(formData, "opening_hours")),
+    opening_hours: parseOpeningHours(openingHours),
   });
   if (error) throw new Error(`Não foi possível cadastrar o local: ${error.message}`);
 
@@ -84,27 +103,45 @@ export async function updateLocation(formData: FormData) {
   const type = textValue(formData, "type");
   const category = textValue(formData, "category");
   const summary = textValue(formData, "summary");
+  const description = textValue(formData, "description");
+  const address = textValue(formData, "address");
+  const phone = textValue(formData, "phone");
+  const imageUrl = textValue(formData, "image_url");
+  const imageAlt = textValue(formData, "image_alt");
+  const imageCredit = textValue(formData, "image_credit");
+  const imageSourceUrl = textValue(formData, "image_source_url");
+  const openingHours = textValue(formData, "opening_hours");
   if (!id || !name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
     throw new Error("Preencha nome, tipo, categoria e resumo.");
   }
+  validateLocationText(name, "name", "Nome");
+  validateLocationText(summary, "summary", "Resumo");
+  validateLocationText(description, "description", "Descrição");
+  validateLocationText(address, "address", "Endereço");
+  validateLocationText(phone, "phone", "Telefone");
+  validateLocationText(imageAlt, "description", "Texto alternativo");
+  validateLocationText(imageCredit, "address", "Crédito");
+  validateOptionalUrl(imageUrl, "A URL da imagem");
+  validateOptionalUrl(imageSourceUrl, "A fonte da imagem");
+  validateLocationText(openingHours, "openingHours", "Horários");
 
   const { error } = await supabase.from("locations").update({
     name,
     type,
     category,
     summary,
-    description: textValue(formData, "description") || null,
-    address: textValue(formData, "address") || null,
-    phone: textValue(formData, "phone") || null,
+    description: description || null,
+    address: address || null,
+    phone: phone || null,
     latitude: Number(textValue(formData, "latitude")) || null,
     longitude: Number(textValue(formData, "longitude")) || null,
-    image_url: textValue(formData, "image_url") || null,
-    image_alt: textValue(formData, "image_alt") || null,
-    image_credit: textValue(formData, "image_credit") || null,
-    image_source_url: textValue(formData, "image_source_url") || null,
+    image_url: imageUrl || null,
+    image_alt: imageAlt || null,
+    image_credit: imageCredit || null,
+    image_source_url: imageSourceUrl || null,
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
-    opening_hours: parseOpeningHours(textValue(formData, "opening_hours")),
+    opening_hours: parseOpeningHours(openingHours),
     updated_at: new Date().toISOString(),
   }).eq("id", id);
   if (error) throw new Error(`Não foi possível atualizar o local: ${error.message}`);

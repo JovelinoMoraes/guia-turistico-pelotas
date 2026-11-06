@@ -103,6 +103,7 @@ export function ContentList({ kind, items }: ContentListProps) {
           onClick={requestLocation}
           disabled={locationStatus === "loading"}
           aria-label="Ordenar locais por proximidade"
+          aria-busy={locationStatus === "loading"}
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="8" />
@@ -190,7 +191,7 @@ export function ContentList({ kind, items }: ContentListProps) {
                 {item.openingHours && (() => {
                   const status = getOpeningStatus(item.openingHours, new Date());
                   return status ? (
-                    <p className={`mt-1 text-xs font-bold ${status === "open" ? "text-olive" : "text-brick"}`}>
+                    <p className={`mt-1 text-xs font-bold ${status === "open" ? "text-olive" : "text-brick"}`} role="status">
                       {status === "open" ? "Aberto" : "Fechado"}
                     </p>
                   ) : null;
@@ -218,7 +219,7 @@ export function ContentList({ kind, items }: ContentListProps) {
           {visibleStart + 5 < sortedItems.length && <div ref={loadMoreRef} className="h-8" aria-hidden="true" />}
         </div>
       ) : (
-        <p className="border border-border bg-sand p-6 text-muted" role="status">
+        <p className="mt-4 border border-border bg-sand p-6 text-muted" role="status">
           Nenhum resultado encontrado. Tente outro termo ou categoria.
         </p>
       )}
