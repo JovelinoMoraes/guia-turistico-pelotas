@@ -45,6 +45,12 @@ export function serializeOpeningHours(hours: OpeningHours): string {
   return JSON.stringify(completeHours);
 }
 
+export function getOpeningHoursEntries(hours: OpeningHours): Array<{ label: string; intervals: string[] }> {
+  return weekDays
+    .filter(({ key }) => hours[key]?.length)
+    .map(({ key, label }) => ({ label, intervals: hours[key] ?? [] }));
+}
+
 export function getOpeningStatus(hours: OpeningHours, now: Date): "open" | "closed" | undefined {
   const dayKey = new Intl.DateTimeFormat("en-US", { timeZone: "America/Sao_Paulo", weekday: "long" })
     .format(now)

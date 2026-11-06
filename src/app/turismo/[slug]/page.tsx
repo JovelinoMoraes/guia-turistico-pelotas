@@ -8,6 +8,7 @@ import { SiteShell } from "@/components/site-shell";
 import { getMapUrl } from "@/lib/maps";
 import { OpeningStatus } from "@/components/opening-status";
 import { getPhoneHref } from "@/lib/phone";
+import { getOpeningHoursEntries } from "@/lib/opening-hours";
 
 export const instant = false;
 
@@ -82,6 +83,19 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
               <span className="block text-sm font-bold text-muted">Telefone</span>
               <a className="font-bold text-brick underline" href={getPhoneHref(attraction.phone)}>{attraction.phone}</a>
             </p>
+          )}
+          {attraction.openingHours && (
+            <div className="mt-5 border-t border-border pt-4">
+              <h3 className="text-sm font-bold text-muted">Horário de funcionamento</h3>
+              <dl className="mt-2 grid gap-1 text-sm">
+                {getOpeningHoursEntries(attraction.openingHours).map(({ label, intervals }) => (
+                  <div className="flex flex-wrap justify-between gap-3" key={label}>
+                    <dt className="font-bold">{label}</dt>
+                    <dd className="text-muted">{intervals.join(" · ")}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           )}
           {mapUrl && (
             <a className="mt-5 inline-block rounded-xl bg-brick px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
