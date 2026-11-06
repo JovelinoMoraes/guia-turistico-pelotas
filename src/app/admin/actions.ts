@@ -2,9 +2,15 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { hasActiveAdminSession, startAdminSession } from "@/lib/supabase/admin-session";
+
+export async function startAdminAccess() {
+  await startAdminSession();
+}
 
 async function getAdminClient() {
   const supabase = await createClient();
+  if (!(await hasActiveAdminSession())) throw new Error("A sessão administrativa expirou.");
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Não autenticado.");
 

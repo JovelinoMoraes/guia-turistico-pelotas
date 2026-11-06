@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
+import { startAdminAccess } from "@/app/admin/actions";
 
 export function LoginForm() {
   const router = useRouter();
@@ -13,21 +14,28 @@ export function LoginForm() {
     event.preventDefault();
     setPending(true);
     setError("");
-    const formData = new FormData(event.currentTarget);
-    const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: String(formData.get("email") ?? ""),
-      password: String(formData.get("password") ?? ""),
-    });
+    try {
+      const formData = new FormData(event.currentTarget);
+      const supabase = createClient();
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: String(formData.get("email") ?? ""),
+        password: String(formData.get("password") ?? ""),
+      });
 
-    if (signInError) {
-      setError("E-mail ou senha inválidos.");
+      if (signInError) {
+        setError("E-mail ou senha inválidos.");
+        return;
+      }
+
+      await startAdminAccess();
       setPending(false);
-      return;
+      router.replace("/admin");
+      router.refresh();
+    } catch {
+      setError("Não foi possível concluir o login. Verifique sua conexão e tente novamente.");
+    } finally {
+      setPending(false);
     }
-
-    router.push("/admin");
-    router.refresh();
   }
 
   return (

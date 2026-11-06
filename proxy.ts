@@ -2,6 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  const sessionValue = request.cookies.get("pelotas_admin_session")?.value;
+  if (request.nextUrl.pathname !== "/admin/login" && (!sessionValue || Number(sessionValue) <= Date.now())) {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
   let response = NextResponse.next({ request });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

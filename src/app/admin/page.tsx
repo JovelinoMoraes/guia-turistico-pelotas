@@ -3,11 +3,13 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { LocationForm } from "@/components/admin/location-form";
 import { deleteLocation } from "./actions";
+import { hasActiveAdminSession } from "@/lib/supabase/admin-session";
 
 export const instant = false;
 
 export default async function AdminPage() {
   const supabase = await createClient();
+  if (!(await hasActiveAdminSession())) redirect("/admin/login");
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
   const { data: profile } = await supabase.from("admin_profiles").select("id").eq("id", user.id).maybeSingle();
