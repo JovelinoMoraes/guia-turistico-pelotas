@@ -43,11 +43,13 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
         <div className="relative mt-4 h-72 overflow-hidden rounded-3xl bg-sand">
           {attraction.image ? (
             <>
-              <Image className="object-cover" src={attraction.image.src} alt={attraction.image.alt} fill sizes="(max-width: 1024px) 100vw, 1024px" priority />
+              <Image className="object-cover" src={attraction.image.src} alt={attraction.image.alt} fill sizes="(max-width: 1024px) 100vw, 1024px" priority unoptimized />
               <div className="absolute inset-0 bg-ink/25" />
-              <a className="absolute bottom-3 right-3 text-xs text-white underline" href={attraction.image.sourceUrl} target="_blank" rel="noopener noreferrer">
-                Foto: {attraction.image.credit}
-              </a>
+              {attraction.image.credit && (
+                <a className="absolute bottom-3 right-3 text-xs text-white underline" href={attraction.image.sourceUrl} target="_blank" rel="noopener noreferrer">
+                  Foto: {attraction.image.credit}
+                </a>
+              )}
             </>
           ) : <div className="flex h-full items-end p-6 text-sm font-bold text-muted">Foto não informada</div>}
         </div>

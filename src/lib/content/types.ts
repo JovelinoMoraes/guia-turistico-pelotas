@@ -1,7 +1,7 @@
 export type ContentImage = {
   src: string;
   alt: string;
-  credit: string;
+  credit?: string;
   sourceUrl: string;
 };
 

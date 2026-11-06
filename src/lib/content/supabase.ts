@@ -22,11 +22,11 @@ type LocationRow = {
 };
 
 function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
-  const image = row.image_url && row.image_alt
+  const image = row.image_url
     ? {
         src: row.image_url,
-        alt: row.image_alt,
-        credit: row.image_credit ?? "Crédito não informado",
+        alt: row.image_alt ?? `Imagem de ${row.name}`,
+        credit: row.image_credit ?? undefined,
         sourceUrl: row.image_source_url ?? row.image_url,
       }
     : undefined;

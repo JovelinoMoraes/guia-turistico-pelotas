@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FoodPlace, TouristAttraction } from "@/lib/content/types";
-import { filterContent } from "@/lib/content/filter";
+import { filterContent, normalizeCategory } from "@/lib/content/filter";
 import { getDistanceInKm } from "@/lib/distance";
 
 type ContentListProps = {
@@ -19,6 +19,11 @@ const foodLabels: Record<FoodPlace["category"], string> = {
   doceria: "Doceria",
   outro: "Outro",
 };
+
+function getCategoryLabel(category: string): string {
+  const legacyLabel = foodLabels[category as FoodPlace["category"]];
+  return legacyLabel ?? category;
+}
 
 function formatDistance(distanceInKm: number): string {
   if (distanceInKm < 1) {
@@ -36,7 +41,7 @@ export function ContentList({ kind, items }: ContentListProps) {
   const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "ready" | "denied" | "error">("idle");
   const [visibleStart, setVisibleStart] = useState(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
-  const categories = [...new Set(items.map((item) => item.category))];
+  const categories = [...new Map(items.map((item) => [normalizeCategory(item.category), item.category])).values()];
   const filteredItems = useMemo(() => filterContent(items, query, category), [category, items, query]);
   const sortedItems = useMemo(() => {
     if (!sortByDistance || !userLocation) return filteredItems;
@@ -130,10 +135,8 @@ export function ContentList({ kind, items }: ContentListProps) {
           >
             <option value="todas">Todas</option>
             {categories.map((itemCategory) => (
-              <option key={itemCategory} value={itemCategory}>
-                {kind === "gastronomia"
-                  ? foodLabels[itemCategory as FoodPlace["category"]]
-                  : itemCategory}
+              <option key={itemCategory} value={normalizeCategory(itemCategory)}>
+                {kind === "gastronomia" ? getCategoryLabel(itemCategory) : itemCategory}
               </option>
             ))}
           </select>
@@ -168,7 +171,7 @@ export function ContentList({ kind, items }: ContentListProps) {
                 )}
                 {item.image ? (
                   <>
-                    <Image className="object-cover" src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" />
+                    <Image className="object-cover" src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
                     <div className="absolute inset-0 bg-ink/25" />
                   </>
                 ) : (
@@ -178,7 +181,7 @@ export function ContentList({ kind, items }: ContentListProps) {
               <div className="flex flex-1 flex-col p-4">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-brick">
                   {kind === "gastronomia"
-                    ? foodLabels[(item as FoodPlace).category]
+                    ? getCategoryLabel((item as FoodPlace).category)
                     : (item as TouristAttraction).category}
                 </p>
                 <h2 className="mt-1.5 text-xl font-extrabold text-ink">{item.name}</h2>

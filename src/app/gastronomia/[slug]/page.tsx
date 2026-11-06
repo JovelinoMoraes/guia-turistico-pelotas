@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
@@ -40,7 +41,17 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
           Voltar
         </Link>
         <div className="relative mt-4 flex h-72 items-end rounded-3xl bg-sand p-6 text-sm font-bold text-muted">
-          Foto não informada
+          {place.image ? (
+            <>
+              <Image className="object-cover" src={place.image.src} alt={place.image.alt} fill sizes="(max-width: 1024px) 100vw, 1024px" priority unoptimized />
+              <div className="absolute inset-0 bg-ink/25" />
+              {place.image.credit && (
+                <a className="absolute bottom-3 right-3 text-xs text-white underline" href={place.image.sourceUrl} target="_blank" rel="noopener noreferrer">
+                  Foto: {place.image.credit}
+                </a>
+              )}
+            </>
+          ) : "Foto não informada"}
         </div>
         <h1 className="mt-7 text-4xl font-extrabold">{place.name}</h1>
         {place.partner && (
