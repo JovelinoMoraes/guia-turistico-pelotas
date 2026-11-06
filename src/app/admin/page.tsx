@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { CreateLocationPanel } from "@/components/admin/create-location-panel";
-import { deleteLocation } from "./actions";
+import { DeleteLocationForm } from "@/components/admin/delete-location-form";
 import { hasActiveAdminSession } from "@/lib/supabase/admin-session";
 
 export const instant = false;
@@ -67,14 +67,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               </div>
               <div className="flex shrink-0 items-center gap-4">
                 <Link className="text-sm font-bold text-olive" href={`/admin/locais/${location.id}/editar`}>Editar</Link>
-                <form action={deleteLocation} onSubmit={(event) => {
-                  if (!window.confirm(`Tem certeza que deseja excluir "${location.name}"?`)) {
-                    event.preventDefault();
-                  }
-                }}>
-                  <input name="id" type="hidden" value={location.id} />
-                  <button className="text-sm font-bold text-brick" type="submit">Excluir</button>
-                </form>
+                <DeleteLocationForm id={location.id} name={location.name} />
               </div>
             </li>
           ))}
