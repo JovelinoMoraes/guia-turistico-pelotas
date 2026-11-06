@@ -150,6 +150,16 @@ export function ContentList({ kind, items }: ContentListProps) {
           {visibleItems.map((item) => (
             <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
               <div className="relative h-48 overflow-hidden bg-sand">
+                {item.partner && (
+                  <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-paper/95 px-3 py-2 text-xs font-extrabold text-brick shadow-sm" title="Local parceiro">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                      <path d="m8 11 2.5-2.5a2.1 2.1 0 0 1 3 0l1 1a2.1 2.1 0 0 0 3 0l.5-.5a2.1 2.1 0 0 1 3 3L16 17.5a3 3 0 0 1-4.2 0L8 13.7" />
+                      <path d="m8 11-2.2-2.2a2.1 2.1 0 0 0-3 3l5.5 5.5a3 3 0 0 0 4.2 0l1-1" />
+                      <path d="m13 10.5 2.5 2.5M10.5 12.5l2 2M8.5 14.5l1.5 1.5" />
+                    </svg>
+                    <span>Parceiro</span>
+                  </span>
+                )}
                 {item.image ? (
                   <>
                     <Image className="object-cover" src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" />

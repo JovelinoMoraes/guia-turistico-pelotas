@@ -17,7 +17,7 @@ export default async function AdminPage() {
 
   const { data: locations, error } = await supabase
     .from("locations")
-    .select("id, name, type, category, published")
+    .select("id, name, type, category, published, partner")
     .order("name");
   if (error) throw new Error(`Não foi possível carregar o painel: ${error.message}`);
 
@@ -33,8 +33,11 @@ export default async function AdminPage() {
         <div className="mt-4 grid gap-3">
           {locations?.map((location) => (
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border py-3" key={location.id}>
-              <div><strong>{location.name}</strong><p className="text-sm text-muted">{location.type} · {location.category} · {location.published ? "Publicado" : "Rascunho"}</p></div>
-              <form action={deleteLocation}><input name="id" type="hidden" value={location.id} /><button className="text-sm font-bold text-brick" type="submit">Excluir</button></form>
+              <div><strong>{location.name}</strong><p className="text-sm text-muted">{location.type} · {location.category} · {location.published ? "Publicado" : "Rascunho"}{location.partner ? " · Parceiro" : ""}</p></div>
+              <div className="flex flex-col items-end gap-2">
+                <form action={deleteLocation}><input name="id" type="hidden" value={location.id} /><button className="text-sm font-bold text-brick" type="submit">Excluir</button></form>
+                <Link className="text-sm font-bold text-olive" href={`/admin/locais/${location.id}/editar`}>Editar</Link>
+              </div>
             </div>
           ))}
           {!locations?.length && <p className="text-muted">Nenhum local cadastrado.</p>}

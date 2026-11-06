@@ -42,11 +42,8 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
   return (
     <div className="min-h-screen bg-paper pb-24 text-ink">
       <header className="sticky top-0 z-10 border-b border-border bg-paper/95 backdrop-blur">
-        <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5" aria-label="Navegação principal">
+        <nav className="mx-auto flex h-16 max-w-5xl items-center justify-center px-5" aria-label="Navegação principal">
           <Link href="/turismo" className="font-display text-2xl font-bold tracking-tight text-brick">Pelotas</Link>
-          <Link href={active === "turismo" ? "/gastronomia" : "/turismo"} className="text-sm font-bold text-brick">
-            {active === "turismo" ? "Gastronomia" : "Turismo"}
-          </Link>
         </nav>
       </header>
       {showWeather && (

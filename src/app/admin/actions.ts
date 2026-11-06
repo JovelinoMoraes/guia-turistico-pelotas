@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { hasActiveAdminSession, startAdminSession } from "@/lib/supabase/admin-session";
+import { isValidLocationCategory } from "@/lib/content/categories";
 
 export async function startAdminAccess() {
   await startAdminSession();
@@ -44,7 +45,7 @@ export async function createLocation(formData: FormData) {
   const type = textValue(formData, "type");
   const category = textValue(formData, "category");
   const summary = textValue(formData, "summary");
-  if (!name || !category || !summary || !["turismo", "gastronomia"].includes(type)) {
+  if (!name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
     throw new Error("Preencha nome, tipo, categoria e resumo.");
   }
 
@@ -63,9 +64,45 @@ export async function createLocation(formData: FormData) {
     image_credit: textValue(formData, "image_credit") || null,
     image_source_url: textValue(formData, "image_source_url") || null,
     published: formData.get("published") === "on",
+    partner: formData.get("partner") === "on",
   });
   if (error) throw new Error(`Não foi possível cadastrar o local: ${error.message}`);
 
+  revalidatePath("/turismo");
+  revalidatePath("/gastronomia");
+}
+
+export async function updateLocation(formData: FormData) {
+  const supabase = await getAdminClient();
+  const id = textValue(formData, "id");
+  const name = textValue(formData, "name");
+  const type = textValue(formData, "type");
+  const category = textValue(formData, "category");
+  const summary = textValue(formData, "summary");
+  if (!id || !name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
+    throw new Error("Preencha nome, tipo, categoria e resumo.");
+  }
+
+  const { error } = await supabase.from("locations").update({
+    name,
+    type,
+    category,
+    summary,
+    description: textValue(formData, "description") || null,
+    address: textValue(formData, "address") || null,
+    latitude: Number(textValue(formData, "latitude")) || null,
+    longitude: Number(textValue(formData, "longitude")) || null,
+    image_url: textValue(formData, "image_url") || null,
+    image_alt: textValue(formData, "image_alt") || null,
+    image_credit: textValue(formData, "image_credit") || null,
+    image_source_url: textValue(formData, "image_source_url") || null,
+    published: formData.get("published") === "on",
+    partner: formData.get("partner") === "on",
+    updated_at: new Date().toISOString(),
+  }).eq("id", id);
+  if (error) throw new Error(`Não foi possível atualizar o local: ${error.message}`);
+
+  revalidatePath("/admin");
   revalidatePath("/turismo");
   revalidatePath("/gastronomia");
 }

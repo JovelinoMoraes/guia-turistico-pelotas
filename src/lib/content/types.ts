@@ -16,6 +16,7 @@ export type TouristAttraction = {
   latitude?: number;
   longitude?: number;
   image?: ContentImage;
+  partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;
@@ -34,6 +35,7 @@ export type FoodPlace = {
   latitude?: number;
   longitude?: number;
   image?: ContentImage;
+  partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;

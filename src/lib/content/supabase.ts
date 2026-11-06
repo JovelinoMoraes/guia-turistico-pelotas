@@ -17,6 +17,7 @@ type LocationRow = {
   image_credit: string | null;
   image_source_url: string | null;
   published: boolean;
+  partner: boolean;
 };
 
 function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
@@ -38,6 +39,7 @@ function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
     latitude: row.latitude ?? undefined,
     longitude: row.longitude ?? undefined,
     image,
+    partner: row.partner,
     sourceUrl: row.image_source_url ?? "",
     lastVerifiedAt: new Date().toISOString().slice(0, 10),
     featured: false,
