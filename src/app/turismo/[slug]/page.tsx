@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTouristAttraction, touristAttractions } from "@/lib/content/data";
@@ -36,19 +37,28 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
     <SiteShell active="turismo" showWeather={false}>
       <main className="mx-auto max-w-5xl px-5 py-5">
         <Link className="text-3xl text-[#333]" href="/turismo" aria-label="Voltar para turismo">‹</Link>
-        <div className="mt-4 flex h-72 items-end rounded-3xl bg-[#dbeafa] p-6 text-sm font-bold text-[#55708f]">Foto não informada</div>
+        <div className="relative mt-4 h-72 overflow-hidden rounded-3xl bg-sand">
+          {attraction.image ? (
+            <>
+              <Image className="object-cover" src={attraction.image.src} alt={attraction.image.alt} fill sizes="(max-width: 1024px) 100vw, 1024px" priority />
+              <div className="absolute inset-0 bg-ink/25" />
+              <a className="absolute bottom-3 right-3 text-xs text-white underline" href={attraction.image.sourceUrl} target="_blank" rel="noopener noreferrer">
+                Foto: {attraction.image.credit}
+              </a>
+            </>
+          ) : <div className="flex h-full items-end p-6 text-sm font-bold text-muted">Foto não informada</div>}
+        </div>
         <h1 className="mt-7 text-4xl font-extrabold">{attraction.name}</h1>
-        <p className="mt-5 rounded-2xl border border-[#b9deea] bg-[#eefaff] px-5 py-4 text-lg font-bold text-[#2764c4]">
+        <p className="mt-5 rounded-2xl border border-border bg-sand px-5 py-4 text-lg font-bold text-brick">
           {attraction.category}
         </p>
         <h2 className="mt-10 text-2xl font-extrabold">Descrição</h2>
-        <p className="mt-3 text-lg leading-8 text-[#676767]">{attraction.description}</p>
-        <section className="mt-8 rounded-2xl bg-[#f2f7fd] p-6" aria-labelledby="tourism-location">
-          <p className="text-3xl text-[#2764c4]" aria-hidden="true">⌖</p>
+        <p className="mt-3 text-lg leading-8 text-muted">{attraction.description}</p>
+        <section className="mt-8 rounded-2xl bg-sand p-6" aria-labelledby="tourism-location">
           <h2 id="tourism-location" className="mt-3 text-2xl font-extrabold">Endereço</h2>
-          <p className="mt-2 text-[#676767]">{attraction.address ?? "Endereço não informado na fonte consultada."}</p>
+          <p className="mt-2 text-muted">{attraction.address ?? "Endereço não informado na fonte consultada."}</p>
           {mapUrl && (
-            <a className="mt-5 inline-block rounded-xl bg-[#2764c4] px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
+            <a className="mt-5 inline-block rounded-xl bg-brick px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
               Abrir localização no mapa
             </a>
           )}

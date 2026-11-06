@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { FoodPlace, TouristAttraction } from "@/lib/content/types";
@@ -59,18 +60,25 @@ export function ContentList({ kind, items }: ContentListProps) {
       {filteredItems.length > 0 ? (
         <div className="grid gap-5 pt-8 md:grid-cols-2">
           {filteredItems.map((item) => (
-            <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-[#d9e0e8] bg-white shadow-sm transition-shadow hover:shadow-md">
-              <div className="flex h-48 items-end bg-[#dbeafa] p-5 text-sm font-bold text-[#55708f]">
-                Imagem não informada
+            <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-white shadow-sm transition-shadow hover:shadow-md">
+              <div className="relative h-48 overflow-hidden bg-sand">
+                {item.image ? (
+                  <>
+                    <Image className="object-cover" src={item.image.src} alt={item.image.alt} fill sizes="(max-width: 768px) 100vw, 50vw" />
+                    <div className="absolute inset-0 bg-ink/25" />
+                  </>
+                ) : (
+                  <div className="flex h-full items-end p-5 text-sm font-bold text-muted">Imagem não informada</div>
+                )}
               </div>
               <div className="flex flex-1 flex-col p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#2764c4]">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-brick">
                   {kind === "gastronomia"
                     ? foodLabels[(item as FoodPlace).category]
                     : (item as TouristAttraction).category}
                 </p>
-                <h2 className="mt-2 text-2xl font-extrabold text-[#252525]">{item.name}</h2>
-                <p className="mt-3 min-h-14 leading-7 text-[#676767]">{item.summary}</p>
+                <h2 className="mt-2 text-2xl font-extrabold text-ink">{item.name}</h2>
+                <p className="mt-3 min-h-14 leading-7 text-muted">{item.summary}</p>
                 <Link
                   className="absolute inset-0 rounded-3xl focus-visible:outline-4 focus-visible:outline-[#2764c4]"
                   href={`/${kind}/${item.slug}`}

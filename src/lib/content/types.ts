@@ -1,3 +1,10 @@
+export type ContentImage = {
+  src: string;
+  alt: string;
+  credit: string;
+  sourceUrl: string;
+};
+
 export type TouristAttraction = {
   id: string;
   slug: string;
@@ -8,6 +15,7 @@ export type TouristAttraction = {
   address?: string;
   latitude?: number;
   longitude?: number;
+  image?: ContentImage;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;
@@ -25,6 +33,7 @@ export type FoodPlace = {
   address?: string;
   latitude?: number;
   longitude?: number;
+  image?: ContentImage;
   sourceUrl: string;
   lastVerifiedAt: string;
   featured: boolean;

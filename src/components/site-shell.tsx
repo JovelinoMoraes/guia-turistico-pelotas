@@ -40,11 +40,11 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
   }
 
   return (
-    <div className="min-h-screen bg-white pb-24 text-[#252525]">
-      <header className="sticky top-0 z-10 border-b border-[#e5e7eb] bg-white/95 backdrop-blur">
+    <div className="min-h-screen bg-paper pb-24 text-ink">
+      <header className="sticky top-0 z-10 border-b border-border bg-paper/95 backdrop-blur">
         <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5" aria-label="Navegação principal">
-          <Link href="/turismo" className="text-xl font-extrabold tracking-tight">Pelotas</Link>
-          <Link href={active === "turismo" ? "/gastronomia" : "/turismo"} className="text-sm font-bold text-[#2764c4]">
+          <Link href="/turismo" className="font-display text-2xl font-bold tracking-tight text-brick">Pelotas</Link>
+          <Link href={active === "turismo" ? "/gastronomia" : "/turismo"} className="text-sm font-bold text-brick">
             {active === "turismo" ? "Gastronomia" : "Turismo"}
           </Link>
         </nav>
@@ -52,7 +52,7 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
       {showWeather && (
         <section className="mx-auto max-w-5xl px-5 pt-5" aria-label="Clima em Pelotas">
           {weather ? (
-            <div className="flex items-center justify-between rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4">
+            <div className="flex items-center justify-between rounded-2xl border border-border bg-sand px-5 py-4">
               <div className="flex items-center gap-4">
                 <span className="text-3xl" aria-hidden="true">☁</span>
                 <div>
@@ -65,23 +65,23 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
               <strong className="text-2xl">{Math.round(weather.currentTemperature)}°C</strong>
             </div>
           ) : (
-            <div className="rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4 text-sm text-[#676767]">
+            <div className="rounded-2xl border border-border bg-sand px-5 py-4 text-sm text-muted">
               Não foi possível atualizar o clima agora.
             </div>
           )}
         </section>
       )}
       {children}
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-[#e5e7eb] bg-white" aria-label="Navegação inferior">
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-paper" aria-label="Navegação inferior">
         <div className="mx-auto grid max-w-5xl grid-cols-2">
-          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-[#1f2937]" : "text-[#8b8b8b]"}`} href="/turismo">
+          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-brick" : "text-muted"}`} href="/turismo">
             <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
               <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z" />
               <path d="M9 3v15M15 6v15" />
             </svg>
             Turismo
           </Link>
-          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "gastronomia" ? "text-[#1f2937]" : "text-[#8b8b8b]"}`} href="/gastronomia">
+          <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "gastronomia" ? "text-brick" : "text-muted"}`} href="/gastronomia">
             <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M5 3v7a3 3 0 0 0 6 0V3" />
               <path d="M8 3v18" />

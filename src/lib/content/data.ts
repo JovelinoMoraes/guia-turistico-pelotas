@@ -1,6 +1,12 @@
 import type { FoodPlace, TouristAttraction } from "./types";
 
 const verifiedAt = "2026-11-05";
+const pelotasCentroImage = {
+  src: "/images/pelotas-centro.jpg",
+  alt: "Vista do centro histórico de Pelotas",
+  credit: "RafaelR12 / Wikimedia Commons",
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:PelotasCentro.jpg",
+} as const;
 
 export const touristAttractions: TouristAttraction[] = [
   {
@@ -11,6 +17,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "A Catedral Metropolitana de São Francisco de Paula integra a seleção de atrativos do portal oficial de turismo de Pelotas.",
     category: "Patrimônio histórico e arquitetura",
     address: "Praça José Bonifácio, 15, Centro, Pelotas - RS, 96015-170",
+    image: pelotasCentroImage,
     sourceUrl: "https://visite.pelotasturismo.com.br/service/show/Catedral_Metropolitana_de_Sao_Francisco_de_Paula3",
     lastVerifiedAt: verifiedAt,
     featured: true,
@@ -35,6 +42,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "O Mercado Central de Pelotas integra a seleção de atrativos do portal oficial de turismo de Pelotas.",
     category: "Cultura e espaços públicos",
     address: "Praça Coronel Pedro Osório, 101, Centro, Pelotas - RS, 96015-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://visite.pelotasturismo.com.br/service/show/Mercado_Central_de_Pelotas_",
     lastVerifiedAt: verifiedAt,
     featured: false,
@@ -47,6 +55,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "A Praça Coronel Pedro Osório é um dos principais espaços públicos do centro histórico de Pelotas.",
     category: "Praças e espaços públicos",
     address: "Praça Coronel Pedro Osório, Centro, Pelotas - RS, 96015-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://visite.pelotasturismo.com.br/service/show/Mercado_Central_de_Pelotas_",
     lastVerifiedAt: verifiedAt,
     featured: true,
@@ -59,6 +68,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "O Theatro Sete de Abril é um dos espaços culturais tradicionais do centro histórico de Pelotas.",
     category: "Cultura e arquitetura",
     address: "Praça Coronel Pedro Osório, 160, Centro, Pelotas - RS, 96015-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://visite.pelotasturismo.com.br/visit/show/Teatro_Sete_de_Abril",
     lastVerifiedAt: verifiedAt,
     featured: true,
@@ -71,6 +81,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "A Biblioteca Pública Pelotense mantém acervos e atividades ligados à história e à cultura da cidade.",
     category: "Cultura e patrimônio",
     address: "Praça Coronel Pedro Osório, 103, Centro, Pelotas - RS, 96015-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://www.gov.br/conarq/pt-br/servicos-1/consulta-as-entidades-custodiadoras-de-acervos-arquivisticos-cadastradas/entidades-custodiadoras-no-estado-do-rio-grande-do-sul/biblioteca-publica-pelotense",
     lastVerifiedAt: verifiedAt,
     featured: false,
@@ -83,6 +94,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "O Museu do Doce preserva e apresenta aspectos da tradição doceira de Pelotas.",
     category: "Museus e cultura",
     address: "Praça Coronel Pedro Osório, Casarão 8, Centro, Pelotas - RS, 96015-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://wp.ufpel.edu.br/museudodoce/",
     lastVerifiedAt: verifiedAt,
     featured: true,
@@ -95,6 +107,7 @@ export const touristAttractions: TouristAttraction[] = [
     description: "O Museu de Arte Leopoldo Gotuzzo reúne exposições e acervo artístico vinculados à UFPel.",
     category: "Museus e cultura",
     address: "Praça Sete de Julho, 180, Centro, Pelotas - RS, 96020-010",
+    image: pelotasCentroImage,
     sourceUrl: "https://wp.ufpel.edu.br/malg/contato/",
     lastVerifiedAt: verifiedAt,
     featured: false,
