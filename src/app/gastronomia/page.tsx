@@ -20,9 +20,9 @@ export default async function GastronomyPage() {
   const foodPlaces = await getPublishedLocations("gastronomia");
   return (
     <SiteShell active="gastronomia">
-      <main className="mx-auto max-w-5xl px-5 py-7">
+      <main className="mx-auto max-w-5xl px-5 pb-7 pt-3">
         <h1 className="text-center text-3xl font-extrabold">Gastronomia</h1>
-        <div className="mt-5">
+        <div className="mt-3">
           <ContentList kind="gastronomia" items={foodPlaces} />
         </div>
       </main>

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { hasActiveAdminSession, startAdminSession } from "@/lib/supabase/admin-session";
 import { isValidLocationCategory } from "@/lib/content/categories";
+import { parseOpeningHours } from "@/lib/opening-hours";
 
 export async function startAdminAccess() {
   await startAdminSession();
@@ -65,6 +66,7 @@ export async function createLocation(formData: FormData) {
     image_source_url: textValue(formData, "image_source_url") || null,
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
+    opening_hours: parseOpeningHours(textValue(formData, "opening_hours")),
   });
   if (error) throw new Error(`Não foi possível cadastrar o local: ${error.message}`);
 
@@ -98,6 +100,7 @@ export async function updateLocation(formData: FormData) {
     image_source_url: textValue(formData, "image_source_url") || null,
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
+    opening_hours: parseOpeningHours(textValue(formData, "opening_hours")),
     updated_at: new Date().toISOString(),
   }).eq("id", id);
   if (error) throw new Error(`Não foi possível atualizar o local: ${error.message}`);

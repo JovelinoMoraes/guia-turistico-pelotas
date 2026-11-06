@@ -1,5 +1,6 @@
 import type { FoodPlace, TouristAttraction } from "./types";
 import { createClient } from "@/lib/supabase/server";
+import type { OpeningHours } from "@/lib/opening-hours";
 
 type LocationRow = {
   id: string;
@@ -19,6 +20,7 @@ type LocationRow = {
   published: boolean;
   partner: boolean;
   updated_at: string;
+  opening_hours: OpeningHours | null;
 };
 
 function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
@@ -41,6 +43,7 @@ function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
     longitude: row.longitude ?? undefined,
     image,
     partner: row.partner,
+    openingHours: row.opening_hours ?? undefined,
     sourceUrl: row.image_source_url ?? "",
     lastVerifiedAt: row.updated_at.slice(0, 10),
     featured: false,

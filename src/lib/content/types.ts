@@ -5,6 +5,8 @@ export type ContentImage = {
   sourceUrl: string;
 };
 
+import type { OpeningHours } from "@/lib/opening-hours";
+
 export type TouristAttraction = {
   id: string;
   slug: string;
@@ -16,6 +18,7 @@ export type TouristAttraction = {
   latitude?: number;
   longitude?: number;
   image?: ContentImage;
+  openingHours?: OpeningHours;
   partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;
@@ -35,6 +38,7 @@ export type FoodPlace = {
   latitude?: number;
   longitude?: number;
   image?: ContentImage;
+  openingHours?: OpeningHours;
   partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;

@@ -20,9 +20,9 @@ export default async function TourismPage() {
   const touristAttractions = await getPublishedLocations("turismo");
   return (
     <SiteShell active="turismo">
-      <main className="mx-auto max-w-5xl px-5 py-7">
+      <main className="mx-auto max-w-5xl px-5 pb-7 pt-3">
         <h1 className="text-center text-3xl font-extrabold">Pontos Turísticos</h1>
-        <div className="mt-5">
+        <div className="mt-3">
           <ContentList kind="turismo" items={touristAttractions} />
         </div>
       </main>

@@ -3,6 +3,7 @@
 import { createLocation, updateLocation } from "@/app/admin/actions";
 import { gastronomyCategories, tourismCategories } from "@/lib/content/categories";
 import { useState } from "react";
+import { serializeOpeningHours, weekDays, type OpeningHours, type WeekDayKey } from "@/lib/opening-hours";
 
 type LocationFormValues = {
   id?: string;
@@ -20,12 +21,35 @@ type LocationFormValues = {
   image_source_url?: string | null;
   published?: boolean;
   partner?: boolean;
+  opening_hours?: OpeningHours | null;
 };
 
 export function LocationForm({ initialValues }: { initialValues?: LocationFormValues }) {
   const [type, setType] = useState<"turismo" | "gastronomia">(initialValues?.type ?? "turismo");
   const categories = type === "turismo" ? tourismCategories : gastronomyCategories;
   const isEditing = Boolean(initialValues?.id);
+  const [openingHours, setOpeningHours] = useState<OpeningHours>(initialValues?.opening_hours ?? {});
+
+  function updatePeriod(day: WeekDayKey, index: number, part: "start" | "end", value: string) {
+    setOpeningHours((current) => {
+      const periods = [...(current[day] ?? [])];
+      const interval = periods[index] ?? "";
+      const [start = "", end = ""] = interval.split("-");
+      periods[index] = part === "start" ? `${value}-${end}` : `${start}-${value}`;
+      return { ...current, [day]: periods };
+    });
+  }
+
+  function addPeriod(day: WeekDayKey) {
+    setOpeningHours((current) => ({ ...current, [day]: [...(current[day] ?? []), "-"] }));
+  }
+
+  function removePeriod(day: WeekDayKey, index: number) {
+    setOpeningHours((current) => {
+      const periods = (current[day] ?? []).filter((_, periodIndex) => periodIndex !== index);
+      return { ...current, [day]: periods.length ? periods : undefined };
+    });
+  }
 
   return (
     <form action={isEditing ? updateLocation : createLocation} className="grid gap-4 rounded-3xl border border-border bg-white p-6">
@@ -37,6 +61,40 @@ export function LocationForm({ initialValues }: { initialValues?: LocationFormVa
         <label className="grid gap-2 font-bold">Categoria<select className="field" name="category" defaultValue={initialValues?.category} required><option value="">Selecione uma categoria</option>{categories.map((category) => <option key={category} value={category}>{category}</option>)}</select></label>
         <label className="grid gap-2 font-bold">Resumo<input className="field" name="summary" defaultValue={initialValues?.summary} placeholder="Uma frase curta sobre o principal atrativo do local" required /></label>
       </div>
+      <fieldset className="grid gap-3">
+        <legend className="font-bold">Horário de funcionamento</legend>
+        <p className="text-sm text-muted">Escolha os horários de abertura e fechamento. Adicione outro período quando necessário.</p>
+        <input name="opening_hours" type="hidden" value={serializeOpeningHours(openingHours)} />
+        <div className="grid gap-3">
+          {weekDays.map(({ key, label }) => (
+            <div className="grid gap-2 rounded-xl border border-border p-3" key={key}>
+              <span className="text-sm font-bold">{label}</span>
+              {(openingHours[key] ?? []).map((interval, index) => {
+                const [start = "", end = ""] = interval.split("-");
+                return (
+                  <div className="flex flex-wrap items-center gap-2" key={`${key}-${index}`}>
+                    <label className="grid gap-1 text-xs font-bold text-muted">
+                      Abre
+                      <input className="field" type="time" value={start} onChange={(event) => updatePeriod(key, index, "start", event.target.value)} />
+                    </label>
+                    <span className="mt-4 text-muted" aria-hidden="true">até</span>
+                    <label className="grid gap-1 text-xs font-bold text-muted">
+                      Fecha
+                      <input className="field" type="time" value={end} onChange={(event) => updatePeriod(key, index, "end", event.target.value)} />
+                    </label>
+                    <button className="mt-4 text-sm font-bold text-brick" type="button" onClick={() => removePeriod(key, index)}>
+                      Remover
+                    </button>
+                  </div>
+                );
+              })}
+              <button className="w-fit text-sm font-bold text-olive" type="button" onClick={() => addPeriod(key)}>
+                + Adicionar período
+              </button>
+            </div>
+          ))}
+        </div>
+      </fieldset>
       <label className="grid gap-2 font-bold">Descrição<textarea className="field" name="description" defaultValue={initialValues?.description ?? ""} placeholder="Descreva o local com mais detalhes para a página do local." rows={3} /></label>
       <label className="grid gap-2 font-bold">Endereço<input className="field" name="address" defaultValue={initialValues?.address ?? ""} placeholder="Ex.: Praça Coronel Pedro Osório, Centro, Pelotas - RS" /></label>
       <div className="grid gap-4 md:grid-cols-2">

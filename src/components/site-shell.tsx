@@ -43,14 +43,15 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
   return (
     <div className="min-h-screen bg-paper pb-24 text-ink">
       <header className="sticky top-0 z-10 border-b border-border bg-paper/95 backdrop-blur">
-        <nav className="relative mx-auto flex h-20 max-w-5xl items-center justify-start px-5" aria-label="Navegação principal">
+        <nav className="mx-auto flex h-20 max-w-5xl items-center justify-between px-5" aria-label="Navegação principal">
           <Link href="/turismo" aria-label="Ir para a página de Turismo">
             <span className="block rounded-2xl bg-white/70 p-1.5">
               <Image className="h-12 w-auto rounded-xl object-contain opacity-95" src="/images/logo.jpg" alt="Logo do Guia Turístico de Pelotas" width={180} height={60} priority />
             </span>
           </Link>
-          <Link href="/turismo" className="absolute left-1/2 -translate-x-1/2 font-display text-2xl font-bold tracking-tight text-brick" aria-label="Ir para a página de Turismo">
-            Pelotas
+          <Link href="/turismo" className="flex translate-y-3 items-baseline gap-1 whitespace-nowrap leading-none" aria-label="Ir para a página de Turismo">
+            <span className="font-display text-xs italic tracking-wide text-black sm:text-sm">encontre em</span>
+            <span className="font-display text-3xl font-bold tracking-tight text-brick sm:text-4xl">Pelotas</span>
           </Link>
         </nav>
       </header>

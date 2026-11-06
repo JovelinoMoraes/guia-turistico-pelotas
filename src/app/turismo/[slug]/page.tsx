@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { getLocationBySlug } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
 import { getMapUrl } from "@/lib/maps";
+import { OpeningStatus } from "@/components/opening-status";
 
 export const instant = false;
 
@@ -36,7 +37,7 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
   return (
     <SiteShell active="turismo" showWeather={false}>
       <main className="mx-auto max-w-5xl px-5 py-5">
-        <Link className="inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-bold text-brick transition-colors hover:bg-sand" href="/turismo" aria-label="Voltar para turismo">
+        <Link className="ml-auto inline-flex w-fit items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-bold text-brick transition-colors hover:bg-sand" href="/turismo" aria-label="Voltar para turismo">
           <span className="text-lg leading-none" aria-hidden="true">←</span>
           Voltar
         </Link>
@@ -54,11 +55,18 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
           ) : <div className="flex h-full items-end p-6 text-sm font-bold text-muted">Foto não informada</div>}
         </div>
         <h1 className="mt-7 text-4xl font-extrabold">{attraction.name}</h1>
-        {attraction.partner && (
-          <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-sand px-3 py-2 text-sm font-extrabold text-brick">
-            <span aria-hidden="true">🤝</span>
-            Local parceiro
-          </p>
+        {(attraction.partner || attraction.openingHours) && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {attraction.partner && (
+              <p className="inline-flex items-center gap-2 rounded-full bg-sand px-3 py-2 text-sm font-extrabold text-brick">
+                <span aria-hidden="true">🤝</span>
+                Local parceiro
+              </p>
+            )}
+            <div className="ml-auto">
+              <OpeningStatus hours={attraction.openingHours} />
+            </div>
+          </div>
         )}
         <p className="mt-5 rounded-2xl border border-border bg-sand px-5 py-4 text-lg font-bold text-brick">
           {attraction.category}

@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 
 export const ADMIN_SESSION_SECONDS = 5 * 60;
 const adminSessionCookie = "pelotas_admin_session";
@@ -15,6 +16,7 @@ export async function startAdminSession() {
 }
 
 export async function hasActiveAdminSession() {
+  await connection();
   const value = (await cookies()).get(adminSessionCookie)?.value;
   const expiresAt = Number(value);
   return Number.isFinite(expiresAt) && expiresAt > Date.now();
