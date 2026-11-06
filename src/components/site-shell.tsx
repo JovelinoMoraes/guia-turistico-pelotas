@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { getWeather } from "@/lib/weather/service";
+import { getWeatherIcon } from "@/lib/weather/presentation";
 
 type SiteShellProps = {
   children: ReactNode;
@@ -60,7 +61,7 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
           {weather ? (
             <div className="flex items-center justify-between rounded-xl border border-border bg-sand px-4 py-2.5">
               <div className="flex items-center gap-3">
-                <span className="text-2xl" aria-hidden="true">☁</span>
+                <span className="text-2xl" aria-hidden="true">{getWeatherIcon(weather.currentWeatherCode)}</span>
                 <div>
                   <p className="text-sm font-bold">Pelotas, RS</p>
                   <p className="text-xs text-muted">
@@ -78,6 +79,7 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
         </section>
       )}
       {children}
+      <footer className="mx-auto max-w-5xl px-5 pb-24 pt-8" />
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-paper" aria-label="Navegação inferior">
         <div className="mx-auto grid max-w-5xl grid-cols-3">
           <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-brick" : "text-muted"}`} href="/turismo" aria-current={active === "turismo" ? "page" : undefined}>
@@ -97,10 +99,14 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
             </svg>
             Restaurantes
           </Link>
-          <Link className="flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold text-muted" href="/sugerir">
-            <span className="text-2xl leading-none" aria-hidden="true">+</span>
-            Sugerir local
-          </Link>
+          <div className="flex min-h-16 flex-col items-stretch">
+            <Link className="flex min-h-8 flex-1 items-center justify-center px-1 text-center text-xs font-bold text-muted" href="/sugerir">
+              Sugerir local
+            </Link>
+            <Link className="flex min-h-8 flex-1 items-center justify-center border-t border-border px-1 text-center text-xs font-bold text-muted" href="/apoie">
+              Apoie o app
+            </Link>
+          </div>
         </div>
       </nav>
     </div>
