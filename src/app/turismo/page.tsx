@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { ContentList } from "@/components/content-list";
 import { touristAttractions } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
+
+export const metadata: Metadata = {
+  title: "Pontos turísticos",
+  description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+  openGraph: {
+    title: "Pontos turísticos | Guia Turístico de Pelotas",
+    description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+  },
+};
 
 export default function TourismPage() {
   return (

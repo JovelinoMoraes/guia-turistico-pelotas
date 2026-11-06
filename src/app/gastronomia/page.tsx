@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { ContentList } from "@/components/content-list";
 import { foodPlaces } from "@/lib/content/data";
 import { SiteShell } from "@/components/site-shell";
+
+export const metadata: Metadata = {
+  title: "Gastronomia",
+  description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
+  openGraph: {
+    title: "Gastronomia | Guia Turístico de Pelotas",
+    description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
+  },
+};
 
 export default function GastronomyPage() {
   return (

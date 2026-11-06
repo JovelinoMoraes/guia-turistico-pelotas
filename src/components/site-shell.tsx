@@ -5,6 +5,7 @@ import { getWeather } from "@/lib/weather/service";
 type SiteShellProps = {
   children: ReactNode;
   active: "turismo" | "gastronomia";
+  showWeather?: boolean;
 };
 
 const weatherDescriptions: Record<number, string> = {
@@ -27,7 +28,7 @@ const weatherDescriptions: Record<number, string> = {
   99: "Trovoada",
 };
 
-export async function SiteShell({ children, active }: SiteShellProps) {
+export async function SiteShell({ children, active, showWeather = true }: SiteShellProps) {
   let weather;
 
   try {
@@ -46,26 +47,28 @@ export async function SiteShell({ children, active }: SiteShellProps) {
           </Link>
         </nav>
       </header>
-      <section className="mx-auto max-w-5xl px-5 pt-5" aria-label="Clima em Pelotas">
-        {weather ? (
-          <div className="flex items-center justify-between rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4">
-            <div className="flex items-center gap-4">
-              <span className="text-3xl" aria-hidden="true">☁</span>
-              <div>
-                <p className="font-bold">Pelotas, RS</p>
-                <p className="text-sm text-[#676767]">
-                  {weatherDescriptions[weather.currentWeatherCode] ?? "Condição não informada"}
-                </p>
+      {showWeather && (
+        <section className="mx-auto max-w-5xl px-5 pt-5" aria-label="Clima em Pelotas">
+          {weather ? (
+            <div className="flex items-center justify-between rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4">
+              <div className="flex items-center gap-4">
+                <span className="text-3xl" aria-hidden="true">☁</span>
+                <div>
+                  <p className="font-bold">Pelotas, RS</p>
+                  <p className="text-sm text-[#676767]">
+                    {weatherDescriptions[weather.currentWeatherCode] ?? "Condição não informada"}
+                  </p>
+                </div>
               </div>
+              <strong className="text-2xl">{Math.round(weather.currentTemperature)}°C</strong>
             </div>
-            <strong className="text-2xl">{Math.round(weather.currentTemperature)}°C</strong>
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4 text-sm text-[#676767]">
-            Não foi possível atualizar o clima agora.
-          </div>
-        )}
-      </section>
+          ) : (
+            <div className="rounded-2xl border border-[#d8e1eb] bg-[#f2f7fd] px-5 py-4 text-sm text-[#676767]">
+              Não foi possível atualizar o clima agora.
+            </div>
+          )}
+        </section>
+      )}
       {children}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-[#e5e7eb] bg-white" aria-label="Navegação inferior">
         <div className="mx-auto grid max-w-5xl grid-cols-2">

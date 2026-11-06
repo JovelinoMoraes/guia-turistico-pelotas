@@ -68,7 +68,7 @@ export function ContentList({ kind, items }: ContentListProps) {
       {filteredItems.length > 0 ? (
         <div className="grid gap-5 pt-8 md:grid-cols-2">
           {filteredItems.map((item) => (
-            <article key={item.id} className="flex h-full flex-col overflow-hidden rounded-3xl border border-[#d9e0e8] bg-white shadow-sm">
+            <article key={item.id} className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-[#d9e0e8] bg-white shadow-sm transition-shadow hover:shadow-md">
               <div className="flex h-48 items-end bg-[#dbeafa] p-5 text-sm font-bold text-[#55708f]">
                 Imagem não informada
               </div>
@@ -80,11 +80,8 @@ export function ContentList({ kind, items }: ContentListProps) {
                 </p>
                 <h2 className="mt-2 text-2xl font-extrabold text-[#252525]">{item.name}</h2>
                 <p className="mt-3 min-h-14 leading-7 text-[#676767]">{item.summary}</p>
-                <Link
-                  className="mt-auto pt-5 text-sm font-bold text-[#2764c4] underline underline-offset-4"
-                  href={`/${kind}/${item.slug}`}
-                >
-                  Ver detalhes
+                <Link className="absolute inset-0" href={`/${kind}/${item.slug}`}>
+                  <span className="sr-only">Ver detalhes de {item.name}</span>
                 </Link>
               </div>
             </article>
