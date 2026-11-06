@@ -20,6 +20,14 @@ const foodLabels: Record<FoodPlace["category"], string> = {
   outro: "Outro",
 };
 
+function formatDistance(distanceInKm: number): string {
+  if (distanceInKm < 1) {
+    return `${Math.round(distanceInKm * 1000)} m`;
+  }
+
+  return `${distanceInKm.toFixed(1).replace(".", ",")} km`;
+}
+
 export function ContentList({ kind, items }: ContentListProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("todas");
@@ -159,6 +167,17 @@ export function ContentList({ kind, items }: ContentListProps) {
                 </p>
                 <h2 className="mt-2 text-2xl font-extrabold text-ink">{item.name}</h2>
                 <p className="mt-3 min-h-14 leading-7 text-muted">{item.summary}</p>
+                {userLocation && typeof item.latitude === "number" && typeof item.longitude === "number" && (
+                  <p className="mt-4 border-t border-border pt-3 text-sm font-bold text-olive">
+                    Aproximadamente{" "}
+                    {formatDistance(
+                      getDistanceInKm(userLocation, {
+                        latitude: item.latitude,
+                        longitude: item.longitude,
+                      }),
+                    )}
+                  </p>
+                )}
                 <Link
                   className="absolute inset-0 rounded-3xl focus-visible:outline-4 focus-visible:outline-[#2764c4]"
                   href={`/${kind}/${item.slug}`}
