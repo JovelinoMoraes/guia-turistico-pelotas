@@ -119,8 +119,9 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
             </svg>
             Restaurantes
           </Link>
-          <div className="flex min-h-16 flex-col items-stretch">
-            <Link className="flex min-h-8 flex-1 items-center justify-center px-1 text-center text-xs font-bold text-muted" href="/sugerir">
+          <div className="flex min-h-16 items-stretch">
+            <Link className="flex min-h-16 flex-1 flex-col items-center justify-center gap-1 px-1 text-center text-xs font-bold text-muted" href="/sugerir">
+              <span className="text-2xl leading-none" aria-hidden="true">+</span>
               Sugerir local
             </Link>
           </div>

@@ -30,13 +30,13 @@ export async function generateMetadata({ params }: PageProps<"/gastronomia/[slug
           description: place.summary,
           type: "website",
           url: getCanonicalUrl(`/gastronomia/${place.slug}`),
-          images: place.image ? [{ url: place.image.src, alt: place.image.alt }] : undefined,
+          images: place.image ? [{ url: place.image.src, alt: place.image.alt }] : [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cantos de Pelotas" }],
         },
         twitter: {
           card: "summary_large_image",
           title: place.name,
           description: place.summary,
-          images: place.image ? [place.image.src] : undefined,
+          images: place.image ? [place.image.src] : ["/twitter-image"],
         },
       }
     : {};

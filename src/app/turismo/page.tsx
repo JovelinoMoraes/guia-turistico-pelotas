@@ -12,11 +12,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pontos turísticos | Cantos de Pelotas",
     description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cantos de Pelotas" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Pontos turísticos | Cantos de Pelotas",
     description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+    images: ["/twitter-image"],
   },
 };
 

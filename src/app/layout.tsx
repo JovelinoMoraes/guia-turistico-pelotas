@@ -15,11 +15,13 @@ export const metadata: Metadata = {
     title: "Cantos de Pelotas | Guia de Turismo, Gastronomia e Experiências",
     description: "Descubra Pelotas/RS. Encontre pontos turísticos, lugares históricos, restaurantes, cafeterias, experiências e lugares especiais da cidade.",
     siteName: "Cantos de Pelotas",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cantos de Pelotas" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cantos de Pelotas | Guia de Turismo, Gastronomia e Experiências",
     description: "Descubra Pelotas/RS. Encontre pontos turísticos, lugares históricos, restaurantes, cafeterias, experiências e lugares especiais da cidade.",
+    images: ["/twitter-image"],
   },
   robots: {
     index: true,

@@ -30,13 +30,13 @@ export async function generateMetadata({ params }: PageProps<"/turismo/[slug]">)
           description: attraction.summary,
           type: "website",
           url: getCanonicalUrl(`/turismo/${attraction.slug}`),
-          images: attraction.image ? [{ url: attraction.image.src, alt: attraction.image.alt }] : undefined,
+          images: attraction.image ? [{ url: attraction.image.src, alt: attraction.image.alt }] : [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cantos de Pelotas" }],
         },
         twitter: {
           card: "summary_large_image",
           title: attraction.name,
           description: attraction.summary,
-          images: attraction.image ? [attraction.image.src] : undefined,
+          images: attraction.image ? [attraction.image.src] : ["/twitter-image"],
         },
       }
     : {};
