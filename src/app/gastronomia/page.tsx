@@ -7,7 +7,14 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Gastronomia",
   description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
+  alternates: { canonical: "/gastronomia" },
+  robots: { index: true, follow: true },
   openGraph: {
+    title: "Gastronomia | Cantos de Pelotas",
+    description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
+  },
+  twitter: {
+    card: "summary_large_image",
     title: "Gastronomia | Cantos de Pelotas",
     description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
   },

@@ -10,6 +10,8 @@ import { OpeningStatus } from "@/components/opening-status";
 import { getPhoneHref } from "@/lib/phone";
 import { getOpeningHoursEntries } from "@/lib/opening-hours";
 import { BackToTopButton } from "@/components/back-to-top-button";
+import { StructuredData } from "@/components/structured-data";
+import { getCanonicalUrl, getLocationStructuredData } from "@/lib/seo";
 
 export const instant = false;
 
@@ -21,9 +23,20 @@ export async function generateMetadata({ params }: PageProps<"/turismo/[slug]">)
     ? {
         title: attraction.name,
         description: attraction.summary,
+        alternates: { canonical: `/turismo/${attraction.slug}` },
+        robots: { index: true, follow: true },
         openGraph: {
           title: attraction.name,
           description: attraction.summary,
+          type: "website",
+          url: getCanonicalUrl(`/turismo/${attraction.slug}`),
+          images: attraction.image ? [{ url: attraction.image.src, alt: attraction.image.alt }] : undefined,
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: attraction.name,
+          description: attraction.summary,
+          images: attraction.image ? [attraction.image.src] : undefined,
         },
       }
     : {};
@@ -39,6 +52,7 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
 
   return (
     <SiteShell active="turismo" showWeather={false}>
+      <StructuredData data={getLocationStructuredData(attraction, "turismo")} />
       <main className="mx-auto max-w-5xl px-5 py-5">
         <Link className="ml-auto inline-flex w-fit items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-bold text-brick transition-colors hover:bg-sand" href="/turismo" aria-label="Voltar para turismo">
           <span className="text-lg leading-none" aria-hidden="true">←</span>

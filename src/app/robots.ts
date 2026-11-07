@@ -4,7 +4,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/turismo", "/gastronomia"],
+      allow: ["/"],
+      disallow: ["/admin/"],
     },
     sitemap: "https://cantosdepelotas.com.br/sitemap.xml",
   };

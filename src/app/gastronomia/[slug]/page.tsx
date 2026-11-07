@@ -10,6 +10,8 @@ import { OpeningStatus } from "@/components/opening-status";
 import { getPhoneHref } from "@/lib/phone";
 import { getOpeningHoursEntries } from "@/lib/opening-hours";
 import { BackToTopButton } from "@/components/back-to-top-button";
+import { StructuredData } from "@/components/structured-data";
+import { getCanonicalUrl, getLocationStructuredData } from "@/lib/seo";
 
 export const instant = false;
 
@@ -21,9 +23,20 @@ export async function generateMetadata({ params }: PageProps<"/gastronomia/[slug
     ? {
         title: place.name,
         description: place.summary,
+        alternates: { canonical: `/gastronomia/${place.slug}` },
+        robots: { index: true, follow: true },
         openGraph: {
           title: place.name,
           description: place.summary,
+          type: "website",
+          url: getCanonicalUrl(`/gastronomia/${place.slug}`),
+          images: place.image ? [{ url: place.image.src, alt: place.image.alt }] : undefined,
+        },
+        twitter: {
+          card: "summary_large_image",
+          title: place.name,
+          description: place.summary,
+          images: place.image ? [place.image.src] : undefined,
         },
       }
     : {};
@@ -39,6 +52,7 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
 
   return (
     <SiteShell active="gastronomia" showWeather={false}>
+      <StructuredData data={getLocationStructuredData(place, "gastronomia")} />
       <main className="mx-auto max-w-5xl px-5 py-5">
         <Link className="ml-auto inline-flex w-fit items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-bold text-brick transition-colors hover:bg-sand" href="/gastronomia" aria-label="Voltar para gastronomia">
           <span className="text-lg leading-none" aria-hidden="true">←</span>

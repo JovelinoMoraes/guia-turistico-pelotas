@@ -7,7 +7,14 @@ import { SiteShell } from "@/components/site-shell";
 export const metadata: Metadata = {
   title: "Pontos turísticos",
   description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+  alternates: { canonical: "/turismo" },
+  robots: { index: true, follow: true },
   openGraph: {
+    title: "Pontos turísticos | Cantos de Pelotas",
+    description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
+  },
+  twitter: {
+    card: "summary_large_image",
     title: "Pontos turísticos | Cantos de Pelotas",
     description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
   },
