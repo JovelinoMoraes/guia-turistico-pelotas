@@ -9,6 +9,7 @@ import { getMapUrl } from "@/lib/maps";
 import { OpeningStatus } from "@/components/opening-status";
 import { getPhoneHref } from "@/lib/phone";
 import { getOpeningHoursEntries } from "@/lib/opening-hours";
+import { BackToTopButton } from "@/components/back-to-top-button";
 
 export const instant = false;
 
@@ -103,6 +104,7 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
             </a>
           )}
         </section>
+        <BackToTopButton />
       </main>
     </SiteShell>
   );
