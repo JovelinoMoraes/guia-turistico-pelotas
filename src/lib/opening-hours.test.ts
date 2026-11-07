@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getOpeningStatus, parseOpeningHours, serializeOpeningHours } from "./opening-hours";
+import { getOpeningHoursEntries, getOpeningStatus, parseOpeningHours, serializeOpeningHours } from "./opening-hours";
 
 describe("getOpeningStatus", () => {
   it("returns open inside a configured interval", () => {
@@ -21,5 +21,12 @@ describe("getOpeningStatus", () => {
 
   it("accepts midnight as the end of an interval", () => {
     expect(parseOpeningHours('{"friday":["08:00-00:00"]}').friday).toEqual(["08:00-00:00"]);
+  });
+
+  it("supports a day marked as closed all day", () => {
+    const hours = parseOpeningHours('{"friday":["closed"]}');
+    expect(serializeOpeningHours(hours)).toBe('{"friday":["closed"]}');
+    expect(getOpeningStatus(hours, new Date("2026-11-06T15:00:00.000Z"))).toBe("closed");
+    expect(getOpeningHoursEntries(hours)).toEqual([{ label: "Sexta-feira", intervals: ["Fechado o dia todo"] }]);
   });
 });

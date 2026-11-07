@@ -10,6 +10,7 @@ export const weekDays = [
 
 export type WeekDayKey = (typeof weekDays)[number]["key"];
 export type OpeningHours = Partial<Record<WeekDayKey, string[]>>;
+export const CLOSED_DAY = "closed";
 
 const timePattern = /^(?:[01]\d|2[0-3]):[0-5]\d-(?:[01]\d|2[0-3]):[0-5]\d$/;
 
@@ -28,7 +29,7 @@ export function parseOpeningHours(value: string): OpeningHours {
   for (const { key } of weekDays) {
     const intervals = (parsed as Record<string, unknown>)[key];
     if (intervals === undefined) continue;
-    if (!Array.isArray(intervals) || intervals.some((interval) => typeof interval !== "string" || !timePattern.test(interval) || !isValidInterval(interval))) {
+    if (!Array.isArray(intervals) || !isValidDaySchedule(intervals)) {
       throw new Error("Use horários no formato HH:MM-HH:MM.");
     }
     if (intervals.length) result[key] = intervals;
@@ -39,7 +40,7 @@ export function parseOpeningHours(value: string): OpeningHours {
 export function serializeOpeningHours(hours: OpeningHours): string {
   const completeHours: OpeningHours = {};
   for (const { key } of weekDays) {
-    const completeIntervals = (hours[key] ?? []).filter((interval) => isCompleteInterval(interval));
+    const completeIntervals = (hours[key] ?? []).filter((interval) => interval === CLOSED_DAY || isCompleteInterval(interval));
     if (completeIntervals.length) completeHours[key] = completeIntervals;
   }
   return JSON.stringify(completeHours);
@@ -48,7 +49,10 @@ export function serializeOpeningHours(hours: OpeningHours): string {
 export function getOpeningHoursEntries(hours: OpeningHours): Array<{ label: string; intervals: string[] }> {
   return weekDays
     .filter(({ key }) => hours[key]?.length)
-    .map(({ key, label }) => ({ label, intervals: hours[key] ?? [] }));
+    .map(({ key, label }) => ({
+      label,
+      intervals: hours[key]?.includes(CLOSED_DAY) ? ["Fechado o dia todo"] : hours[key] ?? [],
+    }));
 }
 
 export function getOpeningStatus(hours: OpeningHours, now: Date): "open" | "closed" | undefined {
@@ -57,6 +61,7 @@ export function getOpeningStatus(hours: OpeningHours, now: Date): "open" | "clos
     .toLowerCase() as WeekDayKey;
   const intervals = hours[dayKey];
   if (!intervals?.length) return undefined;
+  if (intervals.includes(CLOSED_DAY)) return "closed";
 
   const currentTime = new Intl.DateTimeFormat("en-GB", {
     timeZone: "America/Sao_Paulo",
@@ -86,6 +91,11 @@ function isValidInterval(value: string): boolean {
 
 function isCompleteInterval(value: string): boolean {
   return timePattern.test(value);
+}
+
+function isValidDaySchedule(value: unknown[]): value is string[] {
+  if (value.includes(CLOSED_DAY)) return value.length === 1;
+  return value.every((interval) => typeof interval === "string" && timePattern.test(interval) && isValidInterval(interval));
 }
 
 function toEndMinutes(value: string): number {

@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { suggestLocation, type SuggestionState } from "@/app/sugerir/actions";
 import { gastronomyCategories, tourismCategories } from "@/lib/content/categories";
-import { serializeOpeningHours, weekDays, type OpeningHours, type WeekDayKey } from "@/lib/opening-hours";
+import { CLOSED_DAY, serializeOpeningHours, weekDays, type OpeningHours, type WeekDayKey } from "@/lib/opening-hours";
 
 export function SuggestLocationForm() {
   const [state, formAction, isPending] = useActionState<SuggestionState, FormData>(suggestLocation, {});
@@ -21,7 +21,14 @@ export function SuggestLocationForm() {
   }
 
   function addPeriod(day: WeekDayKey) {
-    setOpeningHours((current) => ({ ...current, [day]: [...(current[day] ?? []), "-"] }));
+    setOpeningHours((current) => ({ ...current, [day]: [...(current[day]?.includes(CLOSED_DAY) ? [] : current[day] ?? []), "-"] }));
+  }
+
+  function toggleClosedDay(day: WeekDayKey) {
+    setOpeningHours((current) => ({
+      ...current,
+      [day]: current[day]?.includes(CLOSED_DAY) ? undefined : [CLOSED_DAY],
+    }));
   }
 
   function removePeriod(day: WeekDayKey, index: number) {
@@ -61,7 +68,7 @@ export function SuggestLocationForm() {
         {weekDays.map(({ key, label }) => (
           <div className="grid gap-2 rounded-xl border border-border p-3" key={key}>
             <span className="text-sm font-bold">{label}</span>
-            {(openingHours[key] ?? []).map((interval, index) => {
+            {(openingHours[key] ?? []).filter((interval) => interval !== CLOSED_DAY).map((interval, index) => {
               const [start = "", end = ""] = interval.split("-");
               return (
                 <div className="flex flex-wrap items-end gap-2" key={`${key}-${index}`}>
@@ -73,6 +80,9 @@ export function SuggestLocationForm() {
               );
             })}
             <button className="w-fit text-sm font-bold text-olive" type="button" onClick={() => addPeriod(key)}>+ Adicionar período</button>
+            <button className="w-fit text-sm font-bold text-brick" type="button" onClick={() => toggleClosedDay(key)}>
+              {openingHours[key]?.includes(CLOSED_DAY) ? "Definir horário" : "Fechado o dia todo"}
+            </button>
           </div>
         ))}
       </fieldset>

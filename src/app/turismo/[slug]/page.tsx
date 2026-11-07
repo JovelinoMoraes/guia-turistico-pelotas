@@ -74,7 +74,7 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
           {attraction.category}
         </p>
         <h2 className="mt-10 text-2xl font-extrabold">Descrição</h2>
-        <p className="mt-3 text-lg leading-8 text-muted">{attraction.description}</p>
+        <p className="mt-3 whitespace-pre-line text-lg leading-8 text-muted">{attraction.description}</p>
         <section className="mt-8 rounded-2xl bg-sand p-6" aria-labelledby="tourism-location">
           <h2 id="tourism-location" className="mt-3 text-2xl font-extrabold">Endereço</h2>
           <p className="mt-2 text-muted">{attraction.address ?? "Endereço não informado na fonte consultada."}</p>

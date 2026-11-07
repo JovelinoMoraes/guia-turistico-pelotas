@@ -74,7 +74,7 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
           {place.category}
         </p>
         <h2 className="mt-10 text-2xl font-extrabold">Descrição</h2>
-        <p className="mt-3 text-lg leading-8 text-muted">{place.description}</p>
+        <p className="mt-3 whitespace-pre-line text-lg leading-8 text-muted">{place.description}</p>
         <section className="mt-8 rounded-2xl bg-sand p-6" aria-labelledby="food-location">
           <h2 id="food-location" className="mt-3 text-2xl font-extrabold">Endereço</h2>
           <p className="mt-2 text-muted">{place.address ?? "Endereço não informado na fonte consultada."}</p>

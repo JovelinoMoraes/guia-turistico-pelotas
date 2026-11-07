@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import type { FoodPlace, TouristAttraction } from "@/lib/content/types";
 import { filterContent, normalizeCategory } from "@/lib/content/filter";
 import { getDistanceInKm } from "@/lib/distance";
@@ -40,8 +40,6 @@ export function ContentList({ kind, items }: ContentListProps) {
   const [sortByDistance, setSortByDistance] = useState(false);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "ready" | "denied" | "error">("idle");
-  const [visibleStart, setVisibleStart] = useState(0);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
   const categories = [...new Map(items.map((item) => [normalizeCategory(item.category), item.category])).values()];
   const filteredItems = useMemo(() => filterContent(items, query, category), [category, items, query]);
   const sortedItems = useMemo(() => {
@@ -57,22 +55,6 @@ export function ContentList({ kind, items }: ContentListProps) {
       );
     });
   }, [filteredItems, sortByDistance, userLocation]);
-  const visibleItems = sortedItems.slice(visibleStart, visibleStart + 5);
-
-  useEffect(() => {
-    const target = loadMoreRef.current;
-    if (!target || visibleStart + 5 >= sortedItems.length) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisibleStart((current) => current + 5);
-      },
-      { rootMargin: "240px" },
-    );
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, [sortedItems.length, visibleStart]);
-
   function requestLocation() {
     if (!navigator.geolocation) {
       setLocationStatus("error");
@@ -84,7 +66,6 @@ export function ContentList({ kind, items }: ContentListProps) {
       ({ coords }) => {
         setUserLocation({ latitude: coords.latitude, longitude: coords.longitude });
         setSortByDistance(true);
-        setVisibleStart(0);
         setLocationStatus("ready");
       },
       (error) => {
@@ -120,7 +101,6 @@ export function ContentList({ kind, items }: ContentListProps) {
             value={query}
             onChange={(event) => {
               setQuery(event.target.value);
-              setVisibleStart(0);
             }}
             placeholder={`Buscar em ${kind}`}
           />
@@ -132,7 +112,6 @@ export function ContentList({ kind, items }: ContentListProps) {
             value={category}
             onChange={(event) => {
               setCategory(event.target.value);
-              setVisibleStart(0);
             }}
           >
             <option value="todas">Todas</option>
@@ -158,7 +137,7 @@ export function ContentList({ kind, items }: ContentListProps) {
 
       {sortedItems.length > 0 ? (
         <div className="grid gap-3 pt-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visibleItems.map((item) => (
+          {sortedItems.map((item) => (
             <article key={item.id} className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-shadow hover:shadow-md ${item.partner ? "border-2 border-brick bg-[#fffaf4] shadow-[0_0_0_3px_rgba(155,79,61,0.18)]" : "border-border"}`}>
               {item.partner && <div className="h-1 w-full shrink-0 bg-brick" aria-hidden="true" />}
               <div className="relative h-24 overflow-hidden bg-sand">
@@ -216,7 +195,6 @@ export function ContentList({ kind, items }: ContentListProps) {
               </div>
             </article>
           ))}
-          {visibleStart + 5 < sortedItems.length && <div ref={loadMoreRef} className="h-8" aria-hidden="true" />}
         </div>
       ) : (
         <p className="mt-4 border border-border bg-sand p-6 text-muted" role="status">
