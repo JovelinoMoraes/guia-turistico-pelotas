@@ -6,11 +6,12 @@ type MapLocation = {
 
 export function getMapUrl(location: MapLocation): string | undefined {
   if (typeof location.latitude === "number" && typeof location.longitude === "number") {
-    return `https://www.openstreetmap.org/?mlat=${encodeURIComponent(location.latitude)}&mlon=${encodeURIComponent(location.longitude)}#map=18/${encodeURIComponent(location.latitude)}/${encodeURIComponent(location.longitude)}`;
+    const destination = `${location.latitude},${location.longitude}`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
   }
 
   if (location.address?.trim()) {
-    return `https://www.openstreetmap.org/search?query=${encodeURIComponent(location.address.trim())}`;
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location.address.trim())}`;
   }
 
   return undefined;

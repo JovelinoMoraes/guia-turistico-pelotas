@@ -99,7 +99,7 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
           )}
           {mapUrl && (
             <a className="mt-5 inline-block rounded-xl bg-brick px-5 py-3 text-sm font-bold text-white" href={mapUrl} target="_blank" rel="noopener noreferrer">
-              Abrir localização no mapa
+              Traçar rota no Google Maps
             </a>
           )}
         </section>
