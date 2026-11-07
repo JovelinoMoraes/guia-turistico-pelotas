@@ -78,21 +78,26 @@ export function ContentList({ kind, items }: ContentListProps) {
   return (
     <div>
       <div className="grid gap-3">
-        <button
-          className="inline-flex w-fit items-center gap-2 justify-self-end rounded-full border border-brick px-4 py-2 text-sm font-bold text-brick outline-none hover:bg-sand focus-visible:outline-4"
-          type="button"
-          onClick={requestLocation}
-          disabled={locationStatus === "loading"}
-          aria-label="Ordenar locais por proximidade"
-          aria-busy={locationStatus === "loading"}
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="8" />
-            <circle cx="12" cy="12" r="3" />
-            <path d="M12 2v3M22 12h-3M12 22v-3M2 12h3" />
-          </svg>
-          {locationStatus === "loading" ? "Localizando..." : "Ordenar por proximidade"}
-        </button>
+        <div className="flex items-center justify-between gap-2">
+          <span className="whitespace-nowrap rounded-full border border-border bg-white px-2.5 py-1.5 text-xs font-bold text-muted sm:px-4 sm:py-2 sm:text-sm">
+            {items.length} {items.length === 1 ? "local cadastrado" : "locais cadastrados"}
+          </span>
+          <button
+            className="inline-flex min-w-0 items-center gap-1.5 rounded-full border border-brick px-2.5 py-1.5 text-xs font-bold text-brick outline-none hover:bg-sand focus-visible:outline-4 sm:gap-2 sm:px-4 sm:py-2 sm:text-sm"
+            type="button"
+            onClick={requestLocation}
+            disabled={locationStatus === "loading"}
+            aria-label="Ordenar locais por proximidade"
+            aria-busy={locationStatus === "loading"}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M12 2v3M22 12h-3M12 22v-3M2 12h3" />
+            </svg>
+            {locationStatus === "loading" ? "Localizando..." : "Ordenar por proximidade"}
+          </button>
+        </div>
         <label className="flex flex-col gap-2 text-sm font-bold text-ink">
           <span className="sr-only">Buscar</span>
           <input
