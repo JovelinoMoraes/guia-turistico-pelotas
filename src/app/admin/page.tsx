@@ -20,6 +20,8 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
   const status = typeof rawStatus === "string" ? rawStatus : undefined;
   const rawView = rawParams.view;
   const view = rawView === "drafts" ? "drafts" : "all";
+  const rawSearch = rawParams.q;
+  const search = typeof rawSearch === "string" ? rawSearch.trim() : "";
   const locationsQuery = supabase
     .from("locations")
     .select("id, name, type, category, published, partner")
@@ -28,6 +30,14 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
     ? await locationsQuery.eq("published", false)
     : await locationsQuery;
   if (error) throw new Error(`Não foi possível carregar o painel: ${error.message}`);
+  const normalizedSearch = search.toLocaleLowerCase("pt-BR");
+  const filteredLocations = normalizedSearch
+    ? locations?.filter((location) =>
+        [location.name, location.category, location.type].some((value) =>
+          value.toLocaleLowerCase("pt-BR").includes(normalizedSearch),
+        ),
+      )
+    : locations;
   const statusMessages: Record<string, string> = {
     created: "Local cadastrado com sucesso.",
     updated: "Alterações salvas com sucesso.",
@@ -57,8 +67,25 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
             )}
           </div>
         </div>
+        <form className="mt-4 flex flex-wrap gap-2" method="get">
+          {view === "drafts" && <input name="view" type="hidden" value="drafts" />}
+          <label className="min-w-0 flex-1">
+            <span className="sr-only">Pesquisar local</span>
+            <input
+              className="field w-full"
+              name="q"
+              defaultValue={search}
+              placeholder="Pesquisar por nome, categoria ou tipo"
+              type="search"
+            />
+          </label>
+          <button className="rounded-xl border border-brick px-4 py-2 font-bold text-brick hover:bg-sand" type="submit">
+            Pesquisar
+          </button>
+          {search && <Link className="rounded-xl border border-border px-4 py-2 font-bold text-muted" href={view === "drafts" ? "/admin?view=drafts" : "/admin"}>Limpar</Link>}
+        </form>
         <ul className="mt-4 divide-y divide-border">
-          {locations?.map((location) => (
+          {filteredLocations?.map((location) => (
             <li className={`flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-l-4 py-3 pl-3 ${location.published ? "border-transparent" : "border-amber-500 bg-amber-50/70"}`} key={location.id}>
               <div className="min-w-0">
                 <strong className="block truncate">{location.name}</strong>
@@ -71,7 +98,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
               </div>
             </li>
           ))}
-          {!locations?.length && <li className="py-3 text-muted">{view === "drafts" ? "Nenhum rascunho pendente." : "Nenhum local cadastrado."}</li>}
+          {!filteredLocations?.length && <li className="py-3 text-muted">{search ? "Nenhum local encontrado para essa pesquisa." : view === "drafts" ? "Nenhum rascunho pendente." : "Nenhum local cadastrado."}</li>}
         </ul>
       </section>
     </main>

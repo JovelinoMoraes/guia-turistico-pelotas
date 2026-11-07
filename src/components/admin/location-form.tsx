@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { createLocation, updateLocation } from "@/app/admin/actions";
 import { gastronomyCategories, tourismCategories } from "@/lib/content/categories";
 import { useActionState, useState } from "react";
@@ -32,6 +33,8 @@ export function LocationForm({ initialValues }: { initialValues?: LocationFormVa
   const categories = type === "turismo" ? tourismCategories : gastronomyCategories;
   const isEditing = Boolean(initialValues?.id);
   const [openingHours, setOpeningHours] = useState<OpeningHours>(initialValues?.opening_hours ?? {});
+  const [imageUrl, setImageUrl] = useState(initialValues?.image_url ?? "");
+  const [imagePreviewError, setImagePreviewError] = useState(false);
   const [state, formAction, isPending] = useActionState<{ error?: string }, FormData>(
     async (_previousState, formData) => {
       try {
@@ -145,7 +148,42 @@ export function LocationForm({ initialValues }: { initialValues?: LocationFormVa
         <label className="grid gap-2 font-bold">Longitude<input className="field" name="longitude" defaultValue={initialValues?.longitude ?? ""} placeholder="Ex.: -52.3420" type="number" step="any" /></label>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 font-bold">URL da imagem<input className="field" name="image_url" maxLength={2000} defaultValue={initialValues?.image_url ?? ""} placeholder="https://..." type="url" /></label>
+        <div className="grid gap-2">
+          <label className="grid gap-2 font-bold">
+            URL da imagem
+            <input
+              className="field"
+              name="image_url"
+              maxLength={2000}
+              value={imageUrl}
+              onChange={(event) => {
+                setImageUrl(event.target.value);
+                setImagePreviewError(false);
+              }}
+              placeholder="https://..."
+              type="url"
+            />
+          </label>
+          {imageUrl.trim() && !imagePreviewError && (
+            <div className="overflow-hidden rounded-xl border border-border bg-sand">
+              <Image
+                className="h-40 w-full object-cover"
+                src={imageUrl.trim()}
+                alt="Pré-visualização da imagem do local"
+                width={640}
+                height={360}
+                unoptimized
+                onError={() => setImagePreviewError(true)}
+              />
+              <p className="px-3 py-2 text-xs text-muted">Pré-visualização da imagem</p>
+            </div>
+          )}
+          {imageUrl.trim() && imagePreviewError && (
+            <p className="rounded-lg border border-brick bg-brick/10 px-3 py-2 text-sm text-brick" role="alert">
+              Não foi possível carregar essa imagem. Verifique a URL.
+            </p>
+          )}
+        </div>
         <label className="grid gap-2 font-bold">Texto alternativo<input className="field" name="image_alt" maxLength={2000} defaultValue={initialValues?.image_alt ?? ""} placeholder="Descreva o que aparece na imagem" /></label>
         <label className="grid gap-2 font-bold">Crédito<input className="field" name="image_credit" maxLength={300} defaultValue={initialValues?.image_credit ?? ""} placeholder="Ex.: Nome do autor / Wikimedia Commons" /></label>
         <label className="grid gap-2 font-bold">Fonte da imagem<input className="field" name="image_source_url" maxLength={2000} defaultValue={initialValues?.image_source_url ?? ""} placeholder="Link da página original da imagem" type="url" /></label>
