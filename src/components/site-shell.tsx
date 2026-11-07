@@ -6,7 +6,7 @@ import { getWeatherIcon } from "@/lib/weather/presentation";
 
 type SiteShellProps = {
   children: ReactNode;
-  active: "turismo" | "gastronomia";
+  active?: "turismo" | "gastronomia";
   showWeather?: boolean;
 };
 
@@ -56,6 +56,15 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
             <span className="mt-1 text-[8px] font-bold tracking-wide text-muted sm:text-[9px]">Descubra lugares, sabores e experiências</span>
           </Link>
         </nav>
+        <nav className="border-t border-border/70 px-5 py-2" aria-label="Informações institucionais">
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-4 gap-y-1 text-xs font-bold text-brick sm:gap-x-5">
+            <Link href="/sobre">Sobre</Link>
+            <Link href="/contato">Contato</Link>
+            <Link href="/parcerias">Parcerias</Link>
+            <Link href="/privacidade">Privacidade</Link>
+            <Link href="/apoie">Apoie o app</Link>
+          </div>
+        </nav>
       </header>
       {showWeather && (
         <section className="mx-auto max-w-5xl px-5 pt-3" aria-label="Clima em Pelotas">
@@ -80,7 +89,17 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
         </section>
       )}
       {children}
-      <footer className="mx-auto max-w-5xl px-5 pb-24 pt-8" />
+      <footer className="mx-auto max-w-5xl border-t border-border px-5 pb-24 pt-8">
+        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+          <div>
+            <p className="font-display text-xl font-bold text-brick">Cantos de Pelotas</p>
+            <p className="mt-1 text-sm text-muted">Descubra lugares, sabores e experiências.</p>
+          </div>
+          <p className="max-w-sm text-xs leading-5 text-muted">
+            Um guia digital para conhecer melhor Pelotas, sua cultura, sua gastronomia e seus lugares especiais.
+          </p>
+        </div>
+      </footer>
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-paper" aria-label="Navegação inferior">
         <div className="mx-auto grid max-w-5xl grid-cols-3">
           <Link className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-bold ${active === "turismo" ? "text-brick" : "text-muted"}`} href="/turismo" aria-current={active === "turismo" ? "page" : undefined}>
@@ -103,9 +122,6 @@ export async function SiteShell({ children, active, showWeather = true }: SiteSh
           <div className="flex min-h-16 flex-col items-stretch">
             <Link className="flex min-h-8 flex-1 items-center justify-center px-1 text-center text-xs font-bold text-muted" href="/sugerir">
               Sugerir local
-            </Link>
-            <Link className="flex min-h-8 flex-1 items-center justify-center border-t border-border px-1 text-center text-xs font-bold text-muted" href="/apoie">
-              Apoie o app
             </Link>
           </div>
         </div>

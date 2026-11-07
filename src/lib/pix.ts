@@ -1,4 +1,4 @@
-const pixKey = "+5553981449916";
+const pixKey = "44ad3513-ac05-4a96-a0eb-670fb8f2fe44";
 const merchantName = "GUIA PELOTAS";
 const merchantCity = "PELOTAS";
 
@@ -41,5 +41,5 @@ export function getPixKey(): string {
 }
 
 export function getFormattedPixKey(): string {
-  return "(53) 98144-9916";
+  return pixKey;
 }
