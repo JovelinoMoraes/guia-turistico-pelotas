@@ -56,6 +56,8 @@ export async function createLocation(formData: FormData) {
   const imageCredit = textValue(formData, "image_credit");
   const imageSourceUrl = textValue(formData, "image_source_url");
   const openingHours = textValue(formData, "opening_hours");
+  const openingHoursNote = textValue(formData, "opening_hours_note");
+  const websiteUrl = textValue(formData, "website_url");
   if (!name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
     throw new Error("Preencha nome, tipo, categoria e resumo.");
   }
@@ -68,7 +70,9 @@ export async function createLocation(formData: FormData) {
   validateLocationText(imageCredit, "address", "Crédito");
   validateOptionalUrl(imageUrl, "A URL da imagem");
   validateOptionalUrl(imageSourceUrl, "A fonte da imagem");
+  validateOptionalUrl(websiteUrl, "O site");
   validateLocationText(openingHours, "openingHours", "Horários");
+  validateLocationText(openingHoursNote, "openingHoursNote", "Observação sobre o funcionamento");
 
   const { error } = await supabase.from("locations").insert({
     name,
@@ -88,6 +92,8 @@ export async function createLocation(formData: FormData) {
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
     opening_hours: parseOpeningHours(openingHours),
+    opening_hours_note: openingHoursNote || null,
+    website_url: websiteUrl || null,
   });
   if (error) throw new Error(`Não foi possível cadastrar o local: ${error.message}`);
 
@@ -111,6 +117,8 @@ export async function updateLocation(formData: FormData) {
   const imageCredit = textValue(formData, "image_credit");
   const imageSourceUrl = textValue(formData, "image_source_url");
   const openingHours = textValue(formData, "opening_hours");
+  const openingHoursNote = textValue(formData, "opening_hours_note");
+  const websiteUrl = textValue(formData, "website_url");
   if (!id || !name || !category || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
     throw new Error("Preencha nome, tipo, categoria e resumo.");
   }
@@ -123,7 +131,9 @@ export async function updateLocation(formData: FormData) {
   validateLocationText(imageCredit, "address", "Crédito");
   validateOptionalUrl(imageUrl, "A URL da imagem");
   validateOptionalUrl(imageSourceUrl, "A fonte da imagem");
+  validateOptionalUrl(websiteUrl, "O site");
   validateLocationText(openingHours, "openingHours", "Horários");
+  validateLocationText(openingHoursNote, "openingHoursNote", "Observação sobre o funcionamento");
 
   const { error } = await supabase.from("locations").update({
     name,
@@ -142,6 +152,8 @@ export async function updateLocation(formData: FormData) {
     published: formData.get("published") === "on",
     partner: formData.get("partner") === "on",
     opening_hours: parseOpeningHours(openingHours),
+    opening_hours_note: openingHoursNote || null,
+    website_url: websiteUrl || null,
     updated_at: new Date().toISOString(),
   }).eq("id", id);
   if (error) throw new Error(`Não foi possível atualizar o local: ${error.message}`);

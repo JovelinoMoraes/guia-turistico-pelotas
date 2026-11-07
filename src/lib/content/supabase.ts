@@ -22,6 +22,8 @@ type LocationRow = {
   partner: boolean;
   updated_at: string;
   opening_hours: OpeningHours | null;
+  opening_hours_note: string | null;
+  website_url: string | null;
 };
 
 function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
@@ -46,6 +48,8 @@ function toContentItem(row: LocationRow): TouristAttraction | FoodPlace {
     image,
     partner: row.partner,
     openingHours: row.opening_hours ?? undefined,
+    openingHoursNote: row.opening_hours_note ?? undefined,
+    websiteUrl: row.website_url ?? undefined,
     sourceUrl: row.image_source_url ?? "",
     lastVerifiedAt: row.updated_at.slice(0, 10),
     featured: false,

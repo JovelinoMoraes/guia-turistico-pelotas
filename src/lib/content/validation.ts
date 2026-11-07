@@ -6,6 +6,7 @@ export const locationFieldLimits = {
   phone: 30,
   url: 2000,
   openingHours: 4000,
+  openingHoursNote: 1000,
 } as const;
 
 export function validateLocationText(value: string, field: keyof typeof locationFieldLimits, label: string): string {

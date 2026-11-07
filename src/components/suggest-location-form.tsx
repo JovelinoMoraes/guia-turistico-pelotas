@@ -86,6 +86,8 @@ export function SuggestLocationForm() {
           </div>
         ))}
       </fieldset>
+      <label className="grid gap-2 font-bold">Observação sobre o funcionamento<textarea className="field" name="opening_hours_note" maxLength={1000} placeholder="Ex.: O funcionamento ocorre conforme a programação de espetáculos e atividades culturais." rows={3} /></label>
+      <label className="grid gap-2 font-bold">Site<input className="field" name="website_url" maxLength={2000} placeholder="https://..." type="url" /></label>
       <div className="grid gap-4 md:grid-cols-3">
         <label className="grid gap-2 font-bold">URL da imagem<input className="field" name="image_url" maxLength={2000} placeholder="https://..." type="url" /></label>
         <label className="grid gap-2 font-bold">Latitude<input className="field" name="latitude" placeholder="Ex.: -31.7703" type="number" step="any" /></label>

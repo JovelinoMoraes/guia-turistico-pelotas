@@ -20,6 +20,8 @@ export type TouristAttraction = {
   longitude?: number;
   image?: ContentImage;
   openingHours?: OpeningHours;
+  openingHoursNote?: string;
+  websiteUrl?: string;
   partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;
@@ -41,6 +43,8 @@ export type FoodPlace = {
   longitude?: number;
   image?: ContentImage;
   openingHours?: OpeningHours;
+  openingHoursNote?: string;
+  websiteUrl?: string;
   partner?: boolean;
   sourceUrl: string;
   lastVerifiedAt: string;

@@ -23,6 +23,8 @@ type LocationFormValues = {
   published?: boolean;
   partner?: boolean;
   opening_hours?: OpeningHours | null;
+  opening_hours_note?: string | null;
+  website_url?: string | null;
 };
 
 export function LocationForm({ initialValues }: { initialValues?: LocationFormValues }) {
@@ -132,10 +134,12 @@ export function LocationForm({ initialValues }: { initialValues?: LocationFormVa
             </div>
           ))}
         </div>
+        <label className="grid gap-2 font-bold">Observação sobre o funcionamento<textarea className="field" name="opening_hours_note" maxLength={1000} defaultValue={initialValues?.opening_hours_note ?? ""} placeholder="Ex.: O funcionamento ocorre conforme a programação de espetáculos e atividades culturais." rows={3} /></label>
       </fieldset>
       <label className="grid gap-2 font-bold">Descrição<textarea className="field" name="description" maxLength={2000} defaultValue={initialValues?.description ?? ""} placeholder="Descreva o local com mais detalhes para a página do local." rows={3} /></label>
       <label className="grid gap-2 font-bold">Endereço<input className="field" name="address" maxLength={300} defaultValue={initialValues?.address ?? ""} placeholder="Ex.: Praça Coronel Pedro Osório, Centro, Pelotas - RS" /></label>
       <label className="grid gap-2 font-bold">Telefone<input className="field" name="phone" maxLength={30} defaultValue={initialValues?.phone ?? ""} placeholder="Ex.: (53) 99999-9999" type="tel" /></label>
+      <label className="grid gap-2 font-bold">Site<input className="field" name="website_url" maxLength={2000} defaultValue={initialValues?.website_url ?? ""} placeholder="https://..." type="url" /></label>
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 font-bold">Latitude<input className="field" name="latitude" defaultValue={initialValues?.latitude ?? ""} placeholder="Ex.: -31.7703" type="number" step="any" /></label>
         <label className="grid gap-2 font-bold">Longitude<input className="field" name="longitude" defaultValue={initialValues?.longitude ?? ""} placeholder="Ex.: -52.3420" type="number" step="any" /></label>

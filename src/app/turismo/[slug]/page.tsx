@@ -58,7 +58,7 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
           ) : <div className="flex h-full items-end p-6 text-sm font-bold text-muted">Foto não informada</div>}
         </div>
         <h1 className="mt-7 text-4xl font-extrabold">{attraction.name}</h1>
-        {(attraction.partner || attraction.openingHours) && (
+        {(attraction.partner || attraction.openingHours || attraction.openingHoursNote) && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {attraction.partner && (
               <p className="inline-flex items-center gap-2 rounded-full bg-sand px-3 py-2 text-sm font-extrabold text-brick">
@@ -85,17 +85,26 @@ export default async function TourismDetailPage({ params }: PageProps<"/turismo/
               <a className="font-bold text-brick underline" href={getPhoneHref(attraction.phone)}>{attraction.phone}</a>
             </p>
           )}
-          {attraction.openingHours && (
+          {attraction.websiteUrl && (
+            <p className="mt-4">
+              <span className="block text-sm font-bold text-muted">Acompanhe a programação:</span>
+              <a className="break-all font-bold text-brick underline" href={attraction.websiteUrl} target="_blank" rel="noopener noreferrer">{attraction.websiteUrl}</a>
+            </p>
+          )}
+          {(attraction.openingHours || attraction.openingHoursNote) && (
             <div className="mt-5 border-t border-border pt-4">
               <h3 className="text-sm font-bold text-muted">Horário de funcionamento</h3>
-              <dl className="mt-2 grid gap-1 text-sm">
-                {getOpeningHoursEntries(attraction.openingHours).map(({ label, intervals }) => (
-                  <div className="flex flex-wrap justify-between gap-3" key={label}>
-                    <dt className="font-bold">{label}</dt>
-                    <dd className="text-muted">{intervals.join(" · ")}</dd>
-                  </div>
-                ))}
-              </dl>
+              {attraction.openingHours && (
+                <dl className="mt-2 grid gap-1 text-sm">
+                  {getOpeningHoursEntries(attraction.openingHours).map(({ label, intervals }) => (
+                    <div className="flex flex-wrap justify-between gap-3" key={label}>
+                      <dt className="font-bold">{label}</dt>
+                      <dd className="text-muted">{intervals.join(" · ")}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              {attraction.openingHoursNote && <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted">{attraction.openingHoursNote}</p>}
             </div>
           )}
           {mapUrl && (

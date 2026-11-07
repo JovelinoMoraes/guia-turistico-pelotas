@@ -58,7 +58,7 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
           ) : "Foto não informada"}
         </div>
         <h1 className="mt-7 text-4xl font-extrabold">{place.name}</h1>
-        {(place.partner || place.openingHours) && (
+        {(place.partner || place.openingHours || place.openingHoursNote) && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {place.partner && (
               <p className="inline-flex items-center gap-2 rounded-full bg-sand px-3 py-2 text-sm font-extrabold text-brick">
@@ -85,17 +85,26 @@ export default async function GastronomyDetailPage({ params }: PageProps<"/gastr
               <a className="font-bold text-brick underline" href={getPhoneHref(place.phone)}>{place.phone}</a>
             </p>
           )}
-          {place.openingHours && (
+          {place.websiteUrl && (
+            <p className="mt-4">
+              <span className="block text-sm font-bold text-muted">Acompanhe a programação:</span>
+              <a className="break-all font-bold text-brick underline" href={place.websiteUrl} target="_blank" rel="noopener noreferrer">{place.websiteUrl}</a>
+            </p>
+          )}
+          {(place.openingHours || place.openingHoursNote) && (
             <div className="mt-5 border-t border-border pt-4">
               <h3 className="text-sm font-bold text-muted">Horário de funcionamento</h3>
-              <dl className="mt-2 grid gap-1 text-sm">
-                {getOpeningHoursEntries(place.openingHours).map(({ label, intervals }) => (
-                  <div className="flex flex-wrap justify-between gap-3" key={label}>
-                    <dt className="font-bold">{label}</dt>
-                    <dd className="text-muted">{intervals.join(" · ")}</dd>
-                  </div>
-                ))}
-              </dl>
+              {place.openingHours && (
+                <dl className="mt-2 grid gap-1 text-sm">
+                  {getOpeningHoursEntries(place.openingHours).map(({ label, intervals }) => (
+                    <div className="flex flex-wrap justify-between gap-3" key={label}>
+                      <dt className="font-bold">{label}</dt>
+                      <dd className="text-muted">{intervals.join(" · ")}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              {place.openingHoursNote && <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted">{place.openingHoursNote}</p>}
             </div>
           )}
           {mapUrl && (

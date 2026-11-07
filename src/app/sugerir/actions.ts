@@ -38,6 +38,8 @@ export async function suggestLocation(_previousState: SuggestionState, formData:
     const address = textValue(formData, "address");
     const phone = textValue(formData, "phone");
     const openingHours = textValue(formData, "opening_hours");
+    const openingHoursNote = textValue(formData, "opening_hours_note");
+    const websiteUrl = textValue(formData, "website_url");
 
     if (!name || !summary || !["turismo", "gastronomia"].includes(type) || !isValidLocationCategory(type, category)) {
       return { error: "Preencha nome, tipo, categoria e resumo." };
@@ -48,7 +50,9 @@ export async function suggestLocation(_previousState: SuggestionState, formData:
     validateLocationText(address, "address", "Endereço");
     validateLocationText(phone, "phone", "Telefone");
     validateLocationText(openingHours, "openingHours", "Horários");
+    validateLocationText(openingHoursNote, "openingHoursNote", "Observação sobre o funcionamento");
     validateOptionalUrl(imageUrl, "A URL da imagem");
+    validateOptionalUrl(websiteUrl, "O site");
 
     const supabase = await createClient();
     const { error } = await supabase.from("locations").insert({
@@ -69,6 +73,8 @@ export async function suggestLocation(_previousState: SuggestionState, formData:
       published: false,
       partner: false,
       opening_hours: parseOpeningHours(openingHours),
+      opening_hours_note: openingHoursNote || null,
+      website_url: websiteUrl || null,
     });
     if (error) return { error: `Não foi possível enviar a sugestão: ${error.message}` };
 
