@@ -2,7 +2,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import Link from "next/link";
 import QRCode from "qrcode";
-import { getFormattedPixKey, getPixPayload } from "@/lib/pix";
+import { CopyPixKeyButton } from "@/components/copy-pix-key-button";
+import { getFormattedPixKey, getPixKey, getPixPayload } from "@/lib/pix";
 
 export const metadata: Metadata = {
   title: "Apoie o App",
@@ -31,6 +32,7 @@ export default async function SupportPage() {
           <p className="mt-3 text-muted">Aponte a câmera do seu banco para o QR Code ou use a chave:</p>
           <p className="mt-2 break-all rounded-lg bg-sand px-3 py-2 font-bold">{getFormattedPixKey()}</p>
           <p className="mt-3 text-sm text-muted">Chave Pix: telefone</p>
+          <CopyPixKeyButton value={getPixKey()} />
         </div>
       </section>
 
