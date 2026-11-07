@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://guia-turistico-pelotas.vercel.app"),
+  metadataBase: new URL("https://cantosdepelotas.com.br"),
   title: {
-    default: "Guia Turístico de Pelotas",
-    template: "%s | Guia Turístico de Pelotas",
+    default: "Cantos de Pelotas",
+    template: "%s | Cantos de Pelotas",
   },
-  description: "Descubra Pelotas, sua história, cultura e sabores.",
+  description: "Descubra lugares, sabores e experiências em Pelotas.",
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    title: "Guia Turístico de Pelotas",
-    description: "Descubra Pelotas, sua história, cultura e sabores.",
-    siteName: "Guia Turístico de Pelotas",
+    title: "Cantos de Pelotas",
+    description: "Descubra lugares, sabores e experiências em Pelotas.",
+    siteName: "Cantos de Pelotas",
   },
 };
 

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Pontos turísticos",
   description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
   openGraph: {
-    title: "Pontos turísticos | Guia Turístico de Pelotas",
+    title: "Pontos turísticos | Cantos de Pelotas",
     description: "Encontre pontos turísticos e experiências culturais em Pelotas, RS.",
   },
 };

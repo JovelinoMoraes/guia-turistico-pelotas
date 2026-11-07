@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Gastronomia",
   description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
   openGraph: {
-    title: "Gastronomia | Guia Turístico de Pelotas",
+    title: "Gastronomia | Cantos de Pelotas",
     description: "Encontre restaurantes, cafeterias e docerias em Pelotas, RS.",
   },
 };

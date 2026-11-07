@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: ["/turismo", "/gastronomia"],
     },
-    sitemap: "https://guia-turistico-pelotas.vercel.app/sitemap.xml",
+    sitemap: "https://cantosdepelotas.com.br/sitemap.xml",
   };
 }

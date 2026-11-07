@@ -7,7 +7,7 @@ import { getFormattedPixKey, getPixKey, getPixPayload } from "@/lib/pix";
 
 export const metadata: Metadata = {
   title: "Apoie o App",
-  description: "Apoie o App do Guia Turístico de Pelotas e conheça as opções de parceria.",
+  description: "Apoie o App Cantos de Pelotas e conheça as opções de parceria.",
 };
 
 export const instant = false;

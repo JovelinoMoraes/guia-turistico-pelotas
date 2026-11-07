@@ -4,7 +4,7 @@ import { SuggestLocationForm } from "@/components/suggest-location-form";
 
 export const metadata: Metadata = {
   title: "Sugerir local",
-  description: "Envie uma sugestão de local para o Guia Turístico de Pelotas.",
+  description: "Envie uma sugestão de local para o App Cantos de Pelotas.",
 };
 
 export const instant = false;
